@@ -1,0 +1,39 @@
+<style lang="less">
+
+</style>
+<template>
+
+</template>
+
+<script>
+  import wepy from 'wepy';
+
+  export default class Index extends wepy.page {
+    config = {
+      navigationBarTitleText: '通知'
+    };
+    components = {};
+
+    data = {};
+
+    computed = {};
+
+    methods = {};
+
+    events = {};
+
+
+    onLoad() {
+
+    };
+    /**
+     * 监听用户下拉动作
+     */
+    onPullDownRefresh() {
+      setTimeout((arg) => {
+        wx.stopPullDownRefresh();
+      }, 300)
+    };
+
+  }
+</script>

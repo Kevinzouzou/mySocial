@@ -1,0 +1,243 @@
+<style lang="less">
+  @family-regular:PingFangSC-Regular;
+  @family-light:PingFangSC-Light;
+
+  page{
+    background: #fff;
+    .topicCate{
+      position: fixed;
+      z-index: 100;
+      width: 100%;
+      height: 100%;
+      background: rgba(255,255,255,0.85);
+      .title{
+        display: inline-block;
+        width: 100%;
+        text-align: center;
+        font-family: @family-regular;
+        color: #222;
+        font-size:  ~"36rpx";
+        margin-top:  ~"320rpx";
+      }
+      .category{
+        padding:  ~"58rpx"  ~"75rpx" 0;
+        button{
+          display: inline-block;
+          background: #fff;
+          margin:  ~"20rpx"  ~"30rpx";
+          width:  ~"240rpx";
+          height:  ~"88rpx";
+          line-height:  ~"88rpx";
+          color: #4a4a4a;
+          font-size:  ~"28rpx";
+          padding: 0;
+          box-sizing: border-box;
+          font-family: @family-light;
+          border:  ~"1rpx" solid #979797;
+          &.active{
+            background: #4a4a4a;
+            color: #fff;
+          }
+        }
+      }
+      .cancel{
+        display: inline-block;
+        width:  ~"102rpx";
+        text-align: center;
+        font-size:  ~"65rpx";
+        position: fixed;
+        bottom:  ~"35rpx";
+        border-radius:50%;
+        margin:0 50%;
+        transform:translate(-50%);
+      }
+    }
+    .release{
+      font-family: @family-light;
+      background: #fff;
+      .topTitle{
+        padding: 0  ~"40rpx";
+        border-bottom:  ~"1rpx" solid #e8e8e8;
+        height:  ~"97rpx";
+        line-height:  ~"97rpx";
+        input{
+          width: ~"550rpx";
+          height: ~"97rpx";
+          line-height: ~"97rpx";
+          display:inline-block;
+          border: 0;
+          color: #222;
+          font-family: @family-regular;
+          font-size:  ~"32rpx";
+        }
+        .titlePh{color: #222;}
+        text{
+          color: #9b9b9b;
+          font-size:  ~"24rpx";
+          line-height:  ~"24rpx";
+          float: right;
+          margin-top:  ~"37rpx";
+        };
+      }
+      .section{
+        padding: 0  ~"40rpx";
+        border-bottom:  ~"1rpx" solid #e8e8e8;
+        textarea{
+          display: inline-block;
+          width: 100%;
+          height:  ~"380rpx";
+          padding-top:  ~"30rpx";
+          color: #333;
+          font-size:  ~"28rpx";
+          line-height:  ~"44rpx";
+        }
+        .sectionPh{color: #333;}
+        text{
+          display: block;
+          width: 100%;
+          text-align: right;
+          margin-bottom:  ~"40rpx";
+          color: #9b9b9b;
+          font-size:  ~"24rpx";
+          line-height:  ~"24rpx";
+        };
+      }
+      .upPic{
+        padding: 0  ~"40rpx"  ~"30rpx";
+        border-bottom:  ~"20rpx" solid #f2f2f2;
+        .up{
+          width:  ~"150rpx";
+          height:  ~"150rpx";
+          margin:  ~"30rpx"  ~"20rpx"  0 0;
+          border:  ~"1rpx" solid #e7e7e7;
+          border-radius:  ~"4rpx";
+          vertical-align: baseline;
+          line-height: ~"128rpx";
+          font-size: ~"60rpx";
+          display:inline-block;
+
+        }
+        text{
+          color: #9b9b9b;
+          font-size:  ~"24rpx";
+          line-height:  ~"24rpx";
+        }
+      }
+      .anonymous{
+        padding: 0  ~"40rpx";
+        view{
+          image{
+            width:  ~"60rpx";
+            height:  ~"60rpx";
+            border-radius: 50%;
+            vertical-align: middle;
+            margin:  ~"20rpx"  ~"30rpx"  ~"20rpx" 0;
+            &:last-child{
+              width:  ~"32rpx";
+              height:  ~"32rpx";
+              float: right;
+              margin-right: 0;
+            }
+          }
+          text{
+            font-size:  ~"28rpx";
+            color: #222;
+            line-height:  ~"28rpx";
+            border-bottom:  ~"1rpx" solid #e8e8e8;
+          }
+        }
+      }
+      .send{
+        position: fixed;
+        bottom:  ~"30rpx";
+        width:  ~"690rpx";
+        height:  ~"80rpx";
+        line-height:  ~"80rpx";
+        border-radius:  ~"4rpx";
+        background: #c1a17b;
+        color: #fff;
+        padding: 0;
+        margin:  ~"30rpx"  ~"30rpx" 0;
+        font-family: @family-regular;
+      }
+    }
+
+  }
+</style>
+<template>
+  <view class="topicCate">
+    <view class="title">话题类别</view>
+    <view class="category">
+      <button class="teasing active">吐槽</button>
+      <button class="travel">出游</button>
+      <button class="friend">交友</button>
+      <button class="roommates">合租</button>
+      <button class="spellList">拼单</button>
+    </view>
+    <text @tap="back" class="cancel">x</text>
+  </view>
+  <view class="release">
+    <view class="topTitle">
+      <input type="text" placeholder-class="titlePh" placeholder="输入标题...">
+      <text>0/30</text>
+    </view>
+    <view class="section">
+      <textarea placeholder-class="sectionPh" placeholder="请输入正文..."></textarea>
+      <text>0/200</text>
+    </view>
+    <view class="upPic">
+      <button class="up">+</button>
+      <text>0/6</text>
+    </view>
+    <view class="anonymous">
+      <view>
+        <image src="/image/41.png"></image>
+        <text>张三丰</text>
+        <image src="/image/icon_sel.png"></image>
+      </view>
+      <view>
+        <image src="/image/41.png"></image>
+        <text>匿名评论</text>
+        <image src="/image/icon_unsel.png"></image>
+      </view>
+    </view>
+    <button class="send">发布</button>
+  </view>
+
+</template>
+
+<script>
+    import wepy from 'wepy';
+
+    export default class Index extends wepy.page {
+        config = {
+          navigationBarTextStyle: "white",
+          navigationBarBackgroundColor: "#000",
+          navigationBarTitleText: '发布话题'
+        };
+        components = {};
+
+        data = {};
+
+        computed = {};
+
+        methods = {
+          back(){
+            // wx.switchTab({
+            //   url: './index'
+            // })
+            wx.navigateBack({
+              delta: 1
+            })
+          }
+        };
+
+        events = {};
+
+
+        onLoad() {
+
+        }
+
+    }
+</script>

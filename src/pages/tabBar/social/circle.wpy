@@ -1,0 +1,279 @@
+<style lang="less">
+  @family-regular:PingFangSC-Regular;
+  @family-light:PingFangSC-Light;
+  @family-medium:PingFangSC-Medium;
+
+  page{
+    background: #fff;
+  }
+  .main,.title{
+    font-size: ~"32rpx";
+  }
+  .banner{
+    text-align: center;
+  }
+  .banner .banTop{
+    width: 100%;
+    height: ~"420rpx";
+  }
+  .banner .banPosi{
+    width: ~"130rpx";
+    height: ~"130rpx";
+    margin-top: ~"-75rpx";
+    border-radius: 50%;
+    background: #f4f4f4;
+  }
+  .detailBody{
+    padding: 0 ~"40rpx" ~"35rpx";
+    border-bottom: ~"20rpx" solid #ededed;
+  }
+  .title-row .title{
+    line-height:~"58rpx";
+    font-weight:bold;
+    display:inline-block;
+    margin-top:~"20rpx";
+    color:#222;
+    font-size:  ~"36rpx";
+  }
+  .title-row .nums{
+    float:right;
+    margin-top:~"30rpx";
+    color:#eb606a;
+    font-size:~"32rpx";
+    font-weight:bold;
+  }
+  .detailBody .peoples{
+    height:~"100rpx";
+    padding:~"25rpx" 0;
+    overflow:hidden;
+    /*text-overflow:ellipsis;*/
+    /*white-space:nowrap;*/
+    border-top: ~"1rpx" solid #e8e8e8;
+    border-bottom: ~"1rpx" solid #e8e8e8;
+    box-sizing: border-box;
+  }
+  .peoples image{
+    width:~"50rpx";
+    height:~"50rpx";
+    border-radius:50%;
+    margin-right:~"18rpx";
+    vertical-align:middle;
+  }
+  .peoples navigator{display: inline-block;}
+  .peoples .more{
+    height:  ~"13rpx";
+    border: 0;
+    border-radius: 0;
+    margin-right: 0;
+  }
+  .detailBody .intro{
+    padding:~"34rpx" 0  ~"38rpx";
+    font-size:~"28rpx";
+    line-height:  ~"44rpx";
+    border-bottom: ~"1rpx" solid #e8e8e8;
+    color: #333;
+    font-family: @family-light;
+  }
+  .clubIntro .title{
+    margin: ~"34rpx" 0  ~"30rpx";
+    color: #222;
+    line-height:  ~"44rpx";
+    font-weight: 600;
+    font-family: @family-regular;
+  }
+  .clubIntro .title image{
+    float: right;
+    width: ~"40rpx";
+    height: ~"40rpx";
+  }
+  .clubIntro .intros{
+    font-size:~"28rpx";
+    color:#333;
+    line-height:~"44rpx";
+    margin-bottom:  ~"25rpx";
+    font-family: @family-light;
+  }
+  .detailBody>.title-row{
+    margin-bottom: ~"30rpx";
+    font-family: @family-medium;
+  }
+  .othersActivity{
+    padding: 0 ~"40rpx" ~"30rpx";
+    margin-bottom:  ~"68rpx";
+  }
+  .activityTitles{
+    font-family: @family-regular;
+    color: #222;
+    line-height:  ~"32rpx";
+    padding: ~"33rpx" ~"40rpx";
+    border-bottom: ~"1rpx" solid #e7e7e7;
+  }
+  .activityTitles .title{
+    font-size:  ~"30rpx";
+    font-weight: 600;
+  }
+  .activityTitles .num{
+    color: #757575;
+    font-size:  ~"30rpx";
+  }
+  .activity .acIntro{
+    display: inline-block;
+    width:  ~"442rpx";
+    margin-right:  ~"28rpx";
+  }
+  .activity{
+    margin: ~"30rpx" 0;
+  }
+  .activity .acIntro text{
+    display: inline-block;
+    font-size: ~"32rpx";
+    line-height:  ~"32rpx";
+    color: #222;
+    width: 100%;
+    font-family: @family-regular;
+  }
+  .activity .acIntro .title{
+    overflow:hidden;
+    font-weight: 600;
+    white-space:nowrap;
+    text-overflow:ellipsis;
+  }
+  .activity .acIntro .reason{
+    margin:  ~"4rpx" 0  ~"28rpx";
+    font-size:  ~"24rpx";
+    line-height:  ~"34rpx";
+    color: #4a4a4a;
+    font-family: @family-light;
+  }
+  .activity .acIntro .address{
+    color: #9b9b9b;
+    font-size:  ~"24rpx";
+    line-height:  ~"24rpx";
+    margin-bottom:  ~"34rpx";
+    font-family: @family-light;
+  }
+  .activity image{
+    width:  ~"200rpx";
+    height: ~"200rpx";
+  }
+  .addIn{
+    width: 100%;
+    border-radius: 0;
+    text-align: center;
+    position: fixed;
+    bottom: 0;
+    display: block;
+    height:  ~"98rpx";
+    line-height:  ~"98rpx";
+    background: #c1a17b;
+    color: #fff;
+    font-size:  ~"32rpx";
+    padding: 0;
+    font-family: @family-regular;
+  }
+</style>
+<template>
+  <view class="banner">
+    <image class="banTop" src="/image/b1.jpg"></image>
+    <image class="banPosi" src="/image/31.png"></image>
+  </view>
+  <view class="detailBody">
+    <view class="title-row">
+      <text class="title">松湖智谷足球俱乐部</text>
+      <text class="nums">123人</text>
+    </view>
+    <view class="peoples">
+      <image src="/image/41.png"></image>
+      <image src="/image/41.png"></image>
+      <image src="/image/41.png"></image>
+      <image src="/image/41.png"></image>
+      <image src="/image/41.png"></image>
+      <image src="/image/41.png"></image>
+      <image src="/image/41.png"></image>
+      <image src="/image/41.png"></image>
+      <image src="/image/41.png"></image>
+      <navigator url="./number">
+        <image class="more" src="/image/Group.png"></image>
+      </navigator>
+    </view>
+    <view class="intro">
+      简介：<text>松湖智谷足球俱乐部是由松湖智谷园区足球爱好者自行发起成立，欢迎园区志同道合者加入。</text>
+    </view>
+    <view class="clubIntro">
+      <view class="title">
+        <text>俱乐部文字说明</text>
+        <image src="/image/icon_down.png"></image>
+      </view>
+      <view class="intros">
+        说到微信小程序，对他最贴切的定义莫过于微信之父张小龙对他下的定义，“小程序是一种不需要下载安装即可使用的应用，它实现了应用“触手可及”的梦想，用户扫一扫或者搜一下即可打开应用。也体现了“用完即走”的理念，用户不用关心是否安装太多应用的问题。应用将无处不在，随时可用，但又无需安装卸载。对于开发者而言，小程序开发门槛相对较低，难度不及APP，能够满足简单的基础应用，适合生活服务类线下商铺以及非刚需低频应用的转换。小程序能够实现消息通知、线下扫码、公众号关联等七大功能。其中，通过公众号关联，用户可以实现公众号与小程序之间相互跳转。”
+      </view>
+    </view>
+  </view>
+  <view class="activityTitles">
+    <text class="title">活动列表</text>
+    <text class="num">（5）</text>
+  </view>
+  <view class="othersActivity">
+    <view class="activityList">
+      <navigator url="./activity">
+        <view class="activity">
+          <view class="acIntro">
+            <text class="title">4月26日，踢足球，东莞体育馆体育馆</text>
+            <text class="reason">为迎接5.1假日，增加园区人员互动，运营团队特组织此次活动</text>
+            <text class="address">东莞市南城街道体育路3号</text>
+          </view>
+          <image src="/image/pic_activity.png"></image>
+        </view>
+      </navigator>
+
+      <navigator url="./activity">
+        <view class="activity">
+          <view class="acIntro">
+            <text class="title">4月26日，踢足球，东莞体育馆...</text>
+            <text class="reason">为迎接5.1假日，增加园区人员互动，运营团队特组织此次活动</text>
+            <text class="address">东莞市南城街道体育路3号</text>
+          </view>
+          <image src="/image/pic_activity.png"></image>
+        </view>
+      </navigator>
+      <navigator url="./activity">
+        <view class="activity">
+          <view class="acIntro">
+            <text class="title">4月26日，踢足球，东莞体育馆...</text>
+            <text class="reason">为迎接5.1假日，增加园区人员互动，运营团队特组织此次活动</text>
+            <text class="address">东莞市南城街道体育路3号</text>
+          </view>
+          <image src="/image/pic_activity.png"></image>
+        </view>
+      </navigator>
+    </view>
+  </view>
+  <button class="addIn">我要加入</button>
+</template>
+
+<script>
+  import wepy from "wepy";
+
+  export default class Index extends wepy.page {
+    config = {
+      navigationBarTextStyle: "white",
+      navigationBarBackgroundColor: "#000",
+      navigationBarTitleText: "详情"
+    };
+    components = {};
+
+    data = {};
+
+    computed = {};
+
+    methods = {};
+
+    events = {};
+
+
+    onLoad() {
+
+    }
+
+  }
+</script>

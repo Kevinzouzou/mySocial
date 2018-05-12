@@ -1,0 +1,273 @@
+<style lang="less">
+  @family-regular:PingFangSC-Regular;
+  @family-light:PingFangSC-Light;
+  @family-medium:PingFangSC-Medium;
+
+  page{background: #fff;}
+  .activity{
+    .acIntro{
+      padding:  ~"40rpx";
+      border-bottom:  ~"20rpx" solid #ededed;
+      .title{
+        font-family: @family-regular;
+        font-size:  ~"32rpx";
+        color: #222;
+        line-height:  ~"46rpx";
+        margin-bottom:  ~"30rpx";
+        text-align: justify;
+        font-weight: 600;
+      }
+      image{
+        border-radius: 0;
+        width: 100%;
+        height:  ~"460rpx";
+        margin-bottom:  ~"20rpx";
+      }
+      .introDe{
+        text-align: justify;
+        font-size:  ~"28rpx";
+        color: #333;
+        line-height:  ~"44rpx";
+        font-family: @family-light;
+      }
+    }
+    .activityInfo{
+      padding: 0  ~"40rpx";
+      border-bottom:  ~"20rpx" solid #ededed;
+      .title{
+        display: inline-block;
+        width: 100%;
+        height:  ~"88rpx";
+        line-height:  ~"88rpx";
+        font-family: @family-regular;
+        font-size:  ~"30rpx";
+        color: #222;
+        border-bottom:  ~"1rpx" solid #e8e8e8;
+        font-weight: 600;
+      }
+      .infos{
+        padding:  ~"33rpx" 0  ~"27rpx";
+        view{
+          .label{
+            font-family: @family-regular;
+            font-size:  ~"24rpx";
+            color: #222;
+            font-weight: 600;
+            line-height:  ~"36rpx";
+          }
+          text{
+            font-family: @family-light;
+            font-size:  ~"24rpx";
+            color: #222;
+            line-height:  ~"36rpx";
+          }
+          .times{
+            display: inline-block;
+            width:  ~"560rpx";
+            vertical-align: text-top;
+            margin-top:  ~"-4rpx";
+            text{
+              display: inline-block;
+              width: 100%;
+              font-family: @family-light;
+              font-size:  ~"24rpx";
+              color: #222;
+              line-height:  ~"36rpx";
+            }
+          }
+          .point{
+            font-family: @family-light;
+            font-size:  ~"24rpx";
+            color: #f53252;
+            line-height:  ~"30rpx";
+          }
+        }
+      }
+    }
+    .mems{
+      padding: 0  ~"20rpx";
+      border-bottom:  ~"20rpx" solid #ededed;
+      .topTitle{
+        padding: 0  ~"20rpx";
+        border-bottom:  ~"1rpx" solid #e8e8e8;
+        height:  ~"88rpx";
+        line-height:  ~"88rpx";
+        font-family: @family-regular;
+        font-size:  ~"30rpx";
+        .title{
+          color: #222;
+          font-weight: 600;
+        }
+        .num{
+          color: #757575;
+        }
+      }
+      .members{
+        padding:  ~"40rpx"  0;
+        margin-bottom:  ~"60rpx";
+        view{
+          display: inline-block;
+          width:  ~"100rpx";
+          text-align: center;
+          margin:  ~"18rpx"  ~"20rpx";
+          image{
+            width:  ~"100rpx";
+            height:  ~"100rpx";
+            border-radius: 50%;
+          }
+          text{
+            display: inline-block;
+            width:  ~"100rpx";
+            color: #222;
+            font-size:  ~"24rpx";
+            font-family: @family-light;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+          }
+        }
+      }
+    }
+    .addIn{
+      width: 100%;
+      border-radius: 0;
+      text-align: center;
+      position: fixed;
+      bottom: 0;
+      display: block;
+      height:  ~"98rpx";
+      line-height:  ~"98rpx";
+      background: #c1a17b;
+      color: #fff;
+      font-size:  ~"32rpx";
+      padding: 0;
+      font-family: @family-regular;
+    }
+  }
+</style>
+<template>
+  <view class="activity">
+    <view class="acIntro">
+      <view class="title">4月29号，东莞体育馆足球场，对战天安酷派园区的战队，加油兄弟们</view>
+      <image src="/image/pic_activity.png"></image>
+      <view class="introDe">
+        2018年俄罗斯世界杯（英语：2018 FIFA World Cup，俄语：Чемпиона́т ми́ра
+        по футбо́лу 2018）是第21届世界杯足球赛。比赛将于2018年6月14日至7月15日在
+        俄罗斯境内11座城市中的12座球场内举行。这是世界杯首次在俄罗斯境内举行，也是世界杯
+        首次在东欧国家举行，同时是继2006年德国世界杯后世界杯再一次在欧洲举行。俄罗斯世界
+        杯共有32支球队参加比赛；除去东道主俄罗斯自动获得参赛资格以外，其他31支球队将通过
+        参加预选赛获得参赛资格。世界杯期间，将在俄罗斯境内举行64场比赛角逐出冠军。2014年
+        7月13日俄罗斯总统普京和巴西总统迪尔玛·罗塞夫交接世界杯主办权。
+      </view>
+    </view>
+    <view class="activityInfo">
+      <text class="title">活动信息</text>
+      <view class="infos">
+        <view>
+          <text class="label">地点：</text>
+          <text>东莞市南城街道体育路3号-东莞体育馆</text>
+        </view>
+        <view>
+          <text class="label">时间：</text>
+          <view class="times">
+            <text>开始时间：2018-04-28 星期六 19:00</text>
+            <text>结束时间：2018-04-28 星期六 21:30</text>
+          </view>
+        </view>
+        <view>
+          <text class="label">人数：</text>
+          <text>50人</text>
+        </view>
+        <view>
+          <text class="label">费用：</text>
+          <text class="point">免费</text>
+        </view>
+      </view>
+    </view>
+    <view class="mems">
+      <view class="topTitle">
+        <text class="title">已参加</text>
+        <text class="num">（5）</text>
+      </view>
+      <view class="members">
+        <view class="mem">
+          <image src="/image/41.png"></image>
+          <text>LILY</text>
+        </view>
+        <view class="mem">
+          <image src="/image/41.png"></image>
+          <text>Bella</text>
+        </view>
+        <view class="mem">
+          <image src="/image/41.png"></image>
+          <text>娃哈哈营养液</text>
+        </view>
+        <view class="mem">
+          <image src="/image/41.png"></image>
+          <text>LILY</text>
+        </view>
+        <view class="mem">
+          <image src="/image/41.png"></image>
+          <text>Bella</text>
+        </view>
+        <view class="mem">
+          <image src="/image/41.png"></image>
+          <text>娃哈哈营养液</text>
+        </view>
+        <view class="mem">
+          <image src="/image/41.png"></image>
+          <text>LILY</text>
+        </view>
+        <view class="mem">
+          <image src="/image/41.png"></image>
+          <text>Bella</text>
+        </view>
+        <view class="mem">
+          <image src="/image/41.png"></image>
+          <text>娃哈哈营养液</text>
+        </view>
+        <view class="mem">
+          <image src="/image/41.png"></image>
+          <text>LILY</text>
+        </view>
+        <view class="mem">
+          <image src="/image/41.png"></image>
+          <text>Bella</text>
+        </view>
+        <view class="mem">
+          <image src="/image/41.png"></image>
+          <text>娃哈哈营养液</text>
+        </view>
+      </view>
+    </view>
+    <button class="addIn">参加活动</button>
+  </view>
+
+</template>
+
+<script>
+  import wepy from 'wepy';
+
+  export default class Index extends wepy.page {
+    config = {
+      navigationBarTextStyle: "white",
+      navigationBarBackgroundColor: "#000",
+      navigationBarTitleText: '活动详情'
+    };
+    components = {};
+
+    data = {};
+
+    computed = {};
+
+    methods = {};
+
+    events = {};
+
+
+    onLoad() {
+
+    }
+
+  }
+</script>

@@ -1,0 +1,35 @@
+<style lang="less">
+
+</style>
+<template>
+<view @tap="clickTo"><text>这是一个测试看看分包怎么跳转</text></view>
+</template>
+
+<script>
+  import wepy from 'wepy';
+
+  export default class Index extends wepy.page {
+    config = {
+      navigationBarTitleText: '首页'
+    };
+    components = {};
+
+    data = {};
+
+    computed = {};
+
+    methods = {
+      clickTo(){
+        this.$navigate('../../pages/component/notice')
+      }
+    };
+
+    events = {};
+
+
+    onLoad() {
+
+    }
+
+  }
+</script>

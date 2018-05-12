@@ -1,0 +1,548 @@
+<style lang="less">
+  @family-regular:PingFangSC-Regular;
+  @family-light:PingFangSC-Light;
+  @family-medium:PingFangSC-Medium;
+
+  page{background: #fff;}
+  .main,.title{
+    font-size: ~"32rpx";
+    font-family: @family-regular;
+  }
+  .topic-box,.allComments{
+    padding: 0  ~"40rpx";
+    border-bottom: ~"20rpx" solid #ededed;
+  }
+  .box-title{
+    height:~"122rpx";
+    border-bottom:~"1rpx" solid #e7e7e7;
+  }
+  .topicDetails>.box-title{padding: 0  ~"40rpx";}
+  .box-title>image{
+    width:~"60rpx";
+    height:~"60rpx";
+    border-radius:50%;
+    vertical-align:middle;
+    margin:~"31rpx" ~"20rpx" ~"31rpx" 0;
+  }
+  .netName{
+    display: inline-block;
+    vertical-align: middle;
+    margin:  ~"34rpx" 0  ~"21rpx";
+  }
+  .netName text{
+    display: block;
+    color: #4a4a4a;
+    font-size: ~"28rpx";
+    line-height: ~"28rpx";
+    font-family: @family-regular;
+  }
+  .netName .upTime{
+    color: #757575;
+    font-size:  ~"24rpx";
+    margin-top:  ~"6rpx";
+    font-family: @family-light;
+  }
+  .topic-box .title{
+    display: inline-block;
+    padding: 0;
+    font-size:  ~"32rpx";
+    color: #222;
+    line-height:  ~"48rpx";
+    font-weight: bold;
+    margin-top:  ~"23rpx";
+  }
+  .topic-box .detail{
+    margin:~"20rpx" 0  ~"34rpx";
+    color:#757575;
+    font-size:~"28rpx";
+    line-height:  ~"44rpx";
+    font-family: @family-light;
+  }
+  .box-contain .one image{
+    width: 100%;
+    height: ~"350rpx";
+  }
+  .box-contain .morePic image{
+    width: 30%;
+    height: ~"110rpx";
+    margin: ~"10rpx" 1.66%;
+  }
+  .tips{
+    padding: 0 ~"40rpx";
+    margin: ~"17rpx" 0  ~"17rpx";
+  }
+  .tips view{
+    display: inline-block;
+    margin-right:  ~"40rpx";
+  }
+  .tips view image,.allComments .praise image,.allComments .toReply image{
+    width: ~"48rpx";
+    height: ~"48rpx";
+    vertical-align: middle;
+    margin-right: ~"10rpx";
+  }
+  .tips view text{
+    font-size:  ~"28rpx";
+    line-height:  ~"28rpx";
+    color: #757575;
+    font-family: @family-light;
+  }
+  .allComments .toReply text{margin-right: 0;}
+  .allComments .praise,.allComments .toReply{
+    float: right;
+    display: inline-block;
+    height: ~"66rpx";
+    line-height: ~"66rpx";
+    margin: ~"30rpx" 0;
+  }
+  .allComments .theCom{
+    padding-left:~"80rpx";
+    font-size:~"28rpx";
+    line-height:  ~"44rpx";
+    margin:0 0 ~"40rpx";
+    text-align: justify;
+    color: #333;
+    font-family: @family-light;
+  }
+  .oneCom .box-title{
+    border-bottom: 0;
+  }
+  .theCom .theBody{
+    color: #c1a17b;
+    font-family: @family-regular;
+  }
+  .theCom .replys{
+    line-height:  ~"38rpx";
+    background:#f2f2f2;
+    padding:~"22rpx"  ~"30rpx" ~"28rpx";
+    margin-top:~"13rpx";
+    color:#999;
+  }
+  .alls{
+    height:  ~"108rpx";
+    padding:  ~"37rpx"  ~"40rpx";
+    border-bottom: ~"1rpx" solid #e7e7e7;
+  }
+  .alls text{
+    font-size:  ~"32rpx";
+    color: #222;
+    line-height:  ~"32rpx";
+    font-family: @family-regular;
+  }
+  .alls .num{
+    color: #757575;
+    font-size:  ~"30rpx";
+    line-height:  ~"30rpx";
+    font-family: @family-light;
+  }
+  .tipsRight{
+    float: right;
+    height: 100%;
+  }
+  .tipsRight view{
+    display: inline-block;
+    margin-right:  ~"40rpx";
+  }
+  .tipsRight view image{
+    width: ~"48rpx";
+    height: ~"48rpx";
+    vertical-align: middle;
+    margin-right: ~"10rpx";
+  }
+  .tipsRight .praise image{
+    width:  ~"32rpx";
+    height:  ~"32rpx";
+    vertical-align: baseline;
+  }
+  .tipsRight view text{
+    font-size:  ~"28rpx";
+    line-height:  ~"28rpx";
+    color: #c5c5c5;
+    font-family: @family-regular;
+  }
+  .tipsRight view.active text{
+    color: #757575;
+  }
+  .moreDo{
+    position: fixed;
+    bottom: 0;
+    display: block;
+    width: 100%;
+    background: #fff;
+    font-family: @family-light;
+    z-index: 10;
+  }
+  .moreDo text{
+    display: block;
+    width: 100%;
+    height:  ~"100rpx";
+    line-height:  ~"100rpx";
+    font-size:  ~"30rpx";
+    color: #222;
+    text-align: center;
+    border-bottom:  ~"1rpx" solid #e7e7e7;
+  }
+  .moreDo text:first-child,.moreDo text:last-child{
+    border-top:  ~"1rpx" solid #e7e7e7;
+  }
+  .moreDo text:last-child{
+    margin-top:  ~"10rpx";
+  }
+  .hidden{
+    display: none;
+  }
+  .myReply{
+    position:fixed;
+    bottom:0;
+    background:#fff;
+    padding: ~"19rpx" ~"20rpx";
+    border-top: ~"1rpx" solid #dcdcdc;
+    height: ~"98rpx";
+    box-sizing: border-box;
+  }
+  .myReply image{
+    width: ~"52rpx";
+    height: ~"52rpx";
+    border-radius: 50%;
+    margin: ~"4rpx" ~"23rpx" ~"4rpx" 0;
+    vertical-align: middle
+  }
+  .myReply input{
+    display: inline-block;
+    vertical-align: middle;
+    width: ~"517rpx";
+    border: ~"1rpx" solid #e7e7e7;
+    background: #f2f2f2;
+    height: ~"60rpx";
+    line-height: ~"60rpx";
+    box-sizing: border-box;
+    padding:0 ~"20rpx";
+    font-size:  ~"30rpx";
+    border-radius:  ~"4rpx";
+    font-family: @family-light;
+  }
+  .myReply button{
+    display:inline-block;
+    vertical-align: middle;
+    float: right;
+    color:#fff;
+    background:#c1a17b;
+    height:~"60rpx";
+    line-height:~"60rpx";
+    font-size:~"28rpx";
+    width: ~"96rpx";
+    padding:0;
+    font-family: @family-regular;
+  }
+  .anony{
+    position: fixed;
+    display: block;
+    width: 100%;
+    background: #fff;
+    font-family: @family-light;
+    z-index: 10;
+    bottom:  ~"98rpx";
+    padding:  ~"20rpx"  ~"40rpx";
+    box-sizing: border-box;
+    border-top:  ~"1rpx" solid #e7e7e7;
+  }
+  .anony view image{
+    width:  ~"60rpx";
+    height:  ~"60rpx";
+    border-radius: 50%;
+    vertical-align: middle;
+    margin:  ~"20rpx"  ~"30rpx"  ~"20rpx" 0;
+  }
+  .anony view image:last-child{
+    width:  ~"32rpx";
+    height:  ~"32rpx";
+    float: right;
+    margin-right: 0;
+  }
+  .anony text{
+    font-size:  ~"28rpx";
+    color: #222;
+    line-height:  ~"28rpx";
+  }
+</style>
+<template>
+  <view class="topicDetails">
+    <view class="box-title">
+      <image src="/image/41.png"></image>
+      <view class="netName">
+        <text>风一样的女子</text>
+        <text class="upTime">30分钟前</text>
+      </view>
+    </view>
+    <view class="topic-box">
+      <view class="box-contain">
+        <text class="title">[吐槽]小蓝单车的押金你们都退了吗。</text>
+        <view class="detail">
+          小蓝单车押金申请退款都快一个月了，进度还是在审核，什么鬼？你们都退出来了吗？？？
+        </view>
+        <view class="one">
+          <image src="/image/b1.jpg"></image>
+        </view>
+        <view class="morePic">
+          <image src="/image/b1.jpg"></image>
+          <image src="/image/b1.jpg"></image>
+          <image src="/image/b1.jpg"></image>
+          <image src="/image/b1.jpg"></image>
+          <image src="/image/b1.jpg"></image>
+        </view>
+      </view>
+      <view class="tips">
+        <view class="likes">
+          <image src="{{praiseLove?'/image/icon_praise_sel.png':'/image/icon_praise.png'}}" @tap="givePraise"></image>
+          <text @tap="givePraise">{{praiseNums}}</text>
+        </view>
+        <view class="moreAc">
+          <text @tap="moreActions">更多</text>
+        </view>
+      </view>
+    </view>
+    <view class="alls">
+      <text class="title">全部评论</text>
+      <text class="num">（6）</text>
+    </view>
+    <view class="allComments">
+      <view class="oneCom">
+        <view class="box-title">
+          <image src="/image/41.png"></image>
+          <view class="netName">
+            <text>风一样的女子</text>
+            <text class="upTime">30分钟前</text>
+          </view>
+          <view class="tipsRight">
+            <view class="toReply active">
+              <image src="/image/icon_pl.png" @tap="reply"></image>
+              <text @tap="reply">回复</text>
+            </view>
+            <view class="praise active">
+              <image src="{{comPraise?'/image/icon_pl_praise_sel.png':'/image/icon_pl_praise.png'}}" @tap="giveLike"></image>
+              <text @tap="giveLike">{{comPraiseNums}}</text>
+            </view>
+          </view>
+        </view>
+        <view class="theCom">
+          如在下边这个例子中，点击 inner view 会先后调用handleTap3和handleTap2(因为tap事件会冒泡到 middle view，而 middle view 阻止了 tap 事件冒泡，不再向父节点传递)
+        </view>
+      </view>
+      <view class="oneCom">
+        <view class="box-title">
+          <image src="/image/41.png"></image>
+          <view class="netName">
+            <text>风一样的女子</text>
+            <text class="upTime">30分钟前</text>
+          </view>
+          <view class="tipsRight">
+            <view class="toReply">
+              <image src="/image/icon_pl.png" @tap="reply"></image>
+              <text @tap="reply">回复</text>
+            </view>
+            <view class="praise">
+              <image src="/image/icon_pl_praise.png" @tap="giveLike"></image>
+              <text @tap="giveLike">135</text>
+            </view>
+          </view>
+        </view>
+        <view class="theCom">
+          如在下边这个例子中，点击 inner view 会先后调用handleTap3和handleTap2(因为tap事件会冒泡到 middle view，而 middle view 阻止了 tap 事件冒泡，不再向父节点传递)
+        </view>
+      </view>
+      <view class="oneCom">
+        <view class="box-title">
+          <image src="/image/41.png"></image>
+          <view class="netName">
+            <text>风一样的女子</text>
+            <text class="upTime">30分钟前</text>
+          </view>
+          <view class="tipsRight">
+            <view class="toReply">
+              <image src="/image/icon_pl.png" @tap="reply"></image>
+              <text @tap="reply">回复</text>
+            </view>
+            <view class="praise">
+              <image src="/image/icon_pl_praise.png" @tap="giveLike"></image>
+              <text @tap="giveLike">135</text>
+            </view>
+          </view>
+        </view>
+        <view class="theCom">
+          回复 <text class="theBody">@我生命中的阳光</text> 不好意思哈...
+          <view class="replys">
+            <text class="theBody">@我生命中的阳光 </text>
+            <text class="reply">有点讨厌这种提醒，本来根本不会注意</text>
+          </view>
+        </view>
+      </view>
+      <view class="oneCom">
+        <view class="box-title">
+          <image src="/image/41.png"></image>
+          <view class="netName">
+            <text>风一样的女子</text>
+            <text class="upTime">30分钟前</text>
+          </view>
+          <view class="tipsRight">
+            <view class="toReply active">
+              <image src="/image/icon_pl.png" @tap="reply"></image>
+              <text @tap="reply">回复</text>
+            </view>
+            <view class="praise active">
+              <image src="/image/icon_pl_praise_sel.png" @tap="giveLike"></image>
+              <text @tap="giveLike">135</text>
+            </view>
+          </view>
+        </view>
+        <view class="theCom">
+          如在下边这个例子中，点击 inner view 会先后调用handleTap3和handleTap2(因为tap事件会冒泡到 middle view，而 middle view 阻止了 tap 事件冒泡，不再向父节点传递)
+        </view>
+      </view>
+      <view class="oneCom">
+        <view class="box-title">
+          <image src="/image/41.png"></image>
+          <view class="netName">
+            <text>风一样的女子</text>
+            <text class="upTime">30分钟前</text>
+          </view>
+          <view class="tipsRight">
+            <view class="toReply active">
+              <image src="/image/icon_pl.png" @tap="reply"></image>
+              <text @tap="reply">回复</text>
+            </view>
+            <view class="praise active">
+              <image src="/image/icon_pl_praise_sel.png" @tap="giveLike"></image>
+              <text @tap="giveLike">135</text>
+            </view>
+          </view>
+        </view>
+        <view class="theCom">
+          如在下边这个例子中，点击 innerView 会先后调用handleTap3和handleTap2(因为tap事件会冒泡到 middle view，而 middle view 阻止了 tap 事件冒泡，不再向父节点传递)
+        </view>
+      </view>
+      <view class="oneCom">
+        <view class="box-title">
+          <image src="/image/41.png"></image>
+          <view class="netName">
+            <text>风一样的女子</text>
+            <text class="upTime">30分钟前</text>
+          </view>
+          <view class="tipsRight">
+            <view class="toReply active">
+              <image src="/image/icon_pl.png" @tap="reply"></image>
+              <text @tap="reply">回复</text>
+            </view>
+            <view class="praise active">
+              <image src="/image/icon_pl_praise_sel.png" @tap="giveLike"></image>
+              <text @tap="giveLike">135</text>
+            </view>
+          </view>
+        </view>
+        <view class="theCom">
+          回复 <text class="theBody">@我生命中的阳光</text> 不好意思哈...
+          <view class="replys">
+            <text class="theBody">@我生命中的阳光 </text>
+            <text class="reply">有点讨厌这种提醒，本来根本不会注意</text>
+          </view>
+        </view>
+      </view>
+    </view>
+    <view wx:if="{{moreAction}}" class="moreDo">
+      <navigator url="./inform">
+        <text class="report">举报</text>
+      </navigator>
+      <text class="collect">收藏</text>
+      <text @tap="cancelDo" class="cancel">取消</text>
+    </view>
+    <!--回复-->
+    <view wx:if="{{anonymous}}" class="quicCom">
+      <view class="myReply">
+        <image src="/image/31.png"></image>
+        <input placeholder="点击输入..."></input>
+        <button @tap="pubCom" class="publish">发表</button>
+      </view>
+      <view wx:if="{{anony}}" class="anony">
+        <view>
+          <image src="/image/41.png"></image>
+          <text>张三丰</text>
+          <image @tap="comPush" src="{{publisher?'/image/icon_unsel.png':'/image/icon_sel.png'}}"></image>
+        </view>
+        <view>
+          <image src="/image/41.png"></image>
+          <text>匿名评论</text>
+          <image @tap="comPush" src="{{publisher?'/image/icon_sel.png':'/image/icon_unsel.png'}}"></image>
+        </view>
+      </view>
+    </view>
+  </view>
+</template>
+
+<script>
+  import wepy from "wepy";
+
+  export default class Index extends wepy.page {
+    config = {
+      navigationBarTextStyle: "white",
+      navigationBarBackgroundColor: "#000",
+      navigationBarTitleText: "话题详情"
+    };
+    components = {};
+
+    data = {
+      moreAction:false,
+      praiseLove:false,    //点赞
+      praiseNums:135,
+      anonymous:false,       //回复
+      anony:false,           //选实名还是匿名
+      publisher:false,       //回复人方式
+      comPraise:false,       //评论点赞
+      comPraiseNums:100,
+    };
+
+    computed = {};
+
+    methods = {
+      moreActions(){
+        this.moreAction=!this.moreAction;
+      },
+      givePraise(){
+        this.praiseLove=!this.praiseLove;
+        if(this.praiseLove){
+          this.praiseNums++;
+        }else{
+          this.praiseNums--;
+        }
+      },
+      giveLike(){
+        this.comPraise=!this.comPraise;
+        if(this.comPraise){
+          this.comPraiseNums++;
+        }else{
+          this.comPraiseNums--;
+        }
+      },
+      reply(){
+        this.anonymous=!this.anonymous;
+      },
+      comPush(){
+        this.anony=false;
+
+        this.anonymous=false;
+      },
+      pubCom(){
+        this.anony=true;
+      },
+      cancelDo(){
+        this.moreAction=false;
+      }
+    };
+
+    events = {};
+
+
+    onLoad() {
+
+    }
+
+  }
+</script>

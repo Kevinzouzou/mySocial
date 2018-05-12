@@ -1,0 +1,691 @@
+<style lang="less">
+  /*@import "../../../asserts/style/social.less";*/
+  @family-regular:PingFangSC-Regular;
+  @family-light:PingFangSC-Light;
+  @family-medium:PingFangSC-Medium;
+
+  page{
+    background: #fff;
+  }
+  .main,.title{
+    font-size: ~"32rpx";
+    font-family: @family-regular;
+  }
+  .nav{
+    width:100%;
+    height:~"88rpx";
+    display:flex;
+    flex-direction:row;
+    border-bottom: ~"1rpx" solid #E7E7E7;
+    /*margin-top:  ~"50rpx";*/
+  }
+  .nav text{
+    display: inline-block;
+    height:  ~"82rpx";
+    box-sizing: border-box;
+    border-bottom: ~"6rpx" solid transparent;
+    font-size: ~"28rpx";
+    font-family: @family-light;
+  }
+  .default{
+    line-height:~"88rpx";
+    text-align:center;
+    flex:1;
+    color:#9b9b9b;
+    font-weight:bold;
+  }
+  .yellow{
+    line-height:~"88rpx";
+    text-align:center;
+    flex:1;
+    font-weight:bold;
+  }
+  .yellow text{
+    border-color: #c1a17b;
+    color: #222;
+    font-family: @family-regular;
+  }
+  .show{
+    display:block;
+  }
+  .hidden{
+    display:none;
+  }
+  .top-title,.fewComments,.show .latest-active,.show .clubs{border-bottom: ~"20rpx" solid #ededed;}
+  .top-title image,.latest-active image{
+    width: 100%;
+    height: ~"390rpx";
+  }
+  .show .title{
+    line-height:~"48rpx";
+    font-weight:bold;
+    padding:0 ~"40rpx";
+    display:inline-block;
+    margin-top:~"23rpx";
+    color:#222;
+    font-family: @family-regular;
+  }
+  .tips{
+    padding: 0 ~"40rpx";
+    margin: ~"17rpx" 0  ~"27rpx";
+  }
+  .tips view{
+    display: inline-block;
+    margin-right:  ~"40rpx";
+  }
+  .tips view image{
+    width: ~"48rpx";
+    height: ~"48rpx";
+    vertical-align: middle;
+    margin-right: ~"10rpx";
+  }
+  .tips view text{
+    font-size:  ~"28rpx";
+    line-height:  ~"28rpx";
+    color: #757575;
+    font-family: @family-light;
+  }
+  .topic-box{
+    padding: 0 ~"40rpx";
+    border-bottom: ~"1rpx" solid #ededed;
+  }
+  .box-title{
+    padding: 0  ~"40rpx";
+    height:~"122rpx";
+    border-bottom:~"1rpx" solid #e7e7e7;
+  }
+  .box-title image{
+    width:~"60rpx";
+    height:~"60rpx";
+    border-radius:50%;
+    vertical-align:middle;
+    margin:~"31rpx" ~"20rpx" ~"31rpx" 0;
+  }
+  .netName{
+    display: inline-block;
+    vertical-align: middle;
+    margin:  ~"34rpx" 0  ~"21rpx";
+  }
+  .netName text{
+    display: block;
+    color: #4a4a4a;
+    font-size: ~"28rpx";
+    line-height: ~"28rpx";
+    font-family: @family-regular;
+  }
+  .netName .upTime,.netName .setTime{
+    color: #757575;
+    font-size:  ~"24rpx";
+    margin-top:  ~"6rpx";
+    font-family: @family-light;
+  }
+  .topic-box .title{padding: 0;}
+  .topic-box .detail{
+    margin:~"20rpx" 0  ~"34rpx";
+    color:#757575;
+    font-size:~"28rpx";
+    line-height:  ~"44rpx";
+    font-family: @family-light;
+  }
+  .box-contain>image{
+    width: 100%;
+    height: ~"350rpx";
+  }
+  .fewComments{padding:  ~"20rpx" ~"40rpx" ~"40rpx";}
+  .showComments view{
+    font-size: ~"24rpx";
+    margin: ~"5rpx" 0;
+    color: #757575;
+    line-height:  ~"30rpx";
+    font-weight: bold;
+    font-family: @family-medium;
+  }
+  .showComments .reply{
+    font-weight: normal;
+    font-family: @family-light;
+  }
+  .showComments .allComs{
+    margin-top: ~"20rpx";
+    color: #c1a17b;
+    font-family: @family-regular;
+    line-height:  ~"30rpx";
+    font-size:  ~"24rpx";
+  }
+  .latest-active .title-row,.latest-active .showComments,.clubs{
+    padding: 0 ~"40rpx";
+  }
+  .latest-active .showComments{
+    position: relative;
+    padding-bottom:  ~"35rpx";
+  }
+  .latest-active .title-row .title{
+    padding: 0;
+    margin-bottom:  ~"12rpx";
+  }
+  .showComments .signs{
+    position: absolute;
+    right:  ~"40rpx";
+    bottom:  ~"35rpx";
+    font-size: ~"24rpx";
+    line-height:  ~"24rpx";
+    color: #757575;
+  }
+  .showComments .signs>text{
+    vertical-align: sub;
+    font-family: @family-regular;
+  }
+  .showComments .signs .nums{
+    color:#eb606a;
+    font-size:~"28rpx";
+    line-height:  ~"28rpx";
+    font-weight:bold;
+    font-family: @family-medium;
+  }
+  .clubs .club{
+    height: ~"170rpx";
+    border-bottom:~"1rpx" solid #e7e7e7;
+  }
+  .club image{
+    width:~"120rpx";
+    height:~"120rpx";
+    border-radius:~"2rpx";
+    vertical-align:middle;
+    margin:~"30rpx" ~"30rpx" ~"20rpx" 0;
+  }
+  .club .netName .setTime{
+    font-family: @family-light;
+    font-size:  ~"20rpx";
+    line-height:  ~"20rpx";
+    color: #9b9b9b;
+  }
+  .club .netName .title{
+    padding:0;
+    margin:0 0 ~"20rpx";
+    font-family: @family-regular;
+    font-size:  ~"32rpx";
+    line-height:  ~"32rpx";
+    color: #222;
+  }
+  .club .netName view{
+    font-size: ~"24rpx";
+    line-height:  ~"24rpx";
+    font-family: @family-light;
+    color: #222;
+  }
+  .club .netName view .num{
+    display:inline-block;
+    color:#eb606a;
+    font-family: @family-regular;
+  }
+  .club>button{
+    display:inline-block;
+    color:#fff;
+    background:#c1a17b;
+    border-radius:  ~"4rpx";
+    float:right;
+    width:  ~"118rpx";
+    height:~"62rpx";
+    line-height:~"62rpx";
+    text-align: center;
+    margin:~"59rpx" 0  ~"49rpx";
+    padding: 0;
+    font-size:~"24rpx";
+    font-family: @family-regular;
+  }
+  .clubs .intro{
+    margin: ~"19rpx" 0 ~"40rpx";
+    font-family: @family-regular;
+    font-size: ~"24rpx";
+    color: #4a4a4a;
+  }
+  .main>navigator>text{
+    /*float: right;*/
+    /*height:  ~"50rpx";*/
+    /*padding: ~"10rpx"  ~"30rpx" 0;*/
+    /*box-sizing:border-box;*/
+    /*font-size: ~"28rpx";*/
+
+    width: ~"60rpx";
+    height: ~"60rpx";
+    padding:0;
+    border: ~"1rpx" solid #aaa;
+    text-align:center;
+    line-height: ~"60rpx";
+    border-radius:50%;
+    font-size: ~"48rpx";
+    position: fixed;
+    right:  ~"30rpx";
+    bottom:  ~"200rpx";
+    background:rgba(200,200,200,0.25);
+    color: #666;
+  }
+  .pushTopic{
+    display: inline-block;
+  }
+  .hiddenTopic{
+    display: none;
+  }
+  .myReply{
+    position:fixed;
+    bottom:0;
+    background:#fff;
+    padding: ~"19rpx" ~"20rpx";
+    border-top: ~"1rpx" solid #dcdcdc;
+    height: ~"98rpx";
+    box-sizing: border-box;
+  }
+  .myReply image{
+    width: ~"52rpx";
+    height: ~"52rpx";
+    border-radius: 50%;
+    margin: ~"4rpx" ~"23rpx" ~"4rpx" 0;
+    vertical-align: middle
+  }
+  .myReply input{
+    display: inline-block;
+    vertical-align: middle;
+    width: ~"517rpx";
+    border: ~"1rpx" solid #e7e7e7;
+    background: #f2f2f2;
+    height: ~"60rpx";
+    line-height: ~"60rpx";
+    box-sizing: border-box;
+    padding:0 ~"20rpx";
+    font-size:  ~"30rpx";
+    border-radius:  ~"4rpx";
+    font-family: @family-light;
+  }
+  .myReply button{
+    display:inline-block;
+    vertical-align: middle;
+    float: right;
+    color:#fff;
+    background:#c1a17b;
+    height:~"60rpx";
+    line-height:~"60rpx";
+    font-size:~"28rpx";
+    width: ~"96rpx";
+    padding:0;
+    font-family: @family-regular;
+  }
+  .anony{
+    position: fixed;
+    display: block;
+    width: 100%;
+    background: #fff;
+    font-family: @family-light;
+    z-index: 10;
+    bottom:  ~"98rpx";
+    padding:  ~"20rpx"  ~"40rpx";
+    box-sizing: border-box;
+    border-top:  ~"1rpx" solid #e7e7e7;
+  }
+  .anony view image{
+    width:  ~"60rpx";
+    height:  ~"60rpx";
+    border-radius: 50%;
+    vertical-align: middle;
+    margin:  ~"20rpx"  ~"30rpx"  ~"20rpx" 0;
+  }
+  .anony view image:last-child{
+    width:  ~"32rpx";
+    height:  ~"32rpx";
+    float: right;
+    margin-right: 0;
+  }
+  .anony text{
+    font-size:  ~"28rpx";
+    color: #222;
+    line-height:  ~"28rpx";
+  }
+</style>
+<template>
+  <view class="main">
+    <navigator url="./releaseTopic">
+      <text class="{{selectTopic?'pushTopic':'hiddenTopic'}}">+</text>
+    </navigator>
+    <view class="nav so-top">
+      <view class="{{selectTopic?'yellow':'default'}}"  @tap="selectTopic"><text>话题</text></view>
+      <view class="{{selectCircle?'yellow':'default'}}" @tap="selectCircle"><text>圈子</text></view>
+    </view>
+    <view class="contain">
+      <!-- 话题 -->
+      <view class="{{selectTopic?'show':'hidden'}}">
+        <!-- 热点话题 -->
+        <view class="top-title">
+          <navigator url="./topic">
+            <image src="/image/b1.jpg"></image>
+            <text class="title">宋庆后曝猛料：施一公请辞清华副校长是因还不起房贷</text>
+          </navigator>
+          <view class="tips">
+            <view class="likes">
+              <image src="{{praiseLove?'/image/icon_praise_sel.png':'/image/icon_praise.png'}}" @tap="givePraise"></image>
+              <text @tap="givePraise">{{praiseNums}}</text>
+            </view>
+            <view class="comments">
+              <image src="/image/icon_pl.png" @tap="comments"></image>
+              <text @tap="comments">123</text>
+            </view>
+          </view>
+        </view>
+        <!-- 各个话题 -->
+        <view class="topics">
+          <view class="box-title">
+            <image src="/image/41.png"></image>
+            <view class="netName">
+              <text>风一样的女子</text>
+              <text class="upTime">30分钟前</text>
+            </view>
+          </view>
+          <view class="topic-box">
+            <navigator url="./topic">
+              <view class="box-contain">
+                <text class="title">[吐槽]小蓝单车的押金你们都退了吗。</text>
+                <view class="detail">
+                  小蓝单车押金申请退款都快一个月了，进度还是在审核，什么鬼？你们都退出来了吗？？？
+                </view>
+                <image src="/image/b1.jpg"></image>
+              </view>
+            </navigator>
+            <view class="tips">
+              <view class="likes">
+                <image src="{{praiseLove?'/image/icon_praise_sel.png':'/image/icon_praise.png'}}" @tap="givePraise"></image>
+                <text @tap="givePraise">{{praiseNums}}</text>
+              </view>
+              <view class="comments">
+                <image src="/image/icon_pl.png" @tap="comments"></image>
+                <text @tap="comments">123</text>
+              </view>
+            </view>
+          </view>
+          <view class="fewComments">
+            <view class="showComments">
+              <view>
+                <text>呢称：</text>
+                <text class="reply">山东快书看到了才健康</text>
+              </view>
+              <view>
+                <text>呢称：</text>
+                <text class="reply">山东快书看到了才健康</text>
+              </view>
+              <view>
+                <text>呢称：</text>
+                <text class="reply">山东快书看到了才健康</text>
+              </view>
+              <view>
+                <text>呢称：</text>
+                <text class="reply">山东快书看到了才健康</text>
+              </view>
+            </view>
+          </view>
+        </view>
+
+        <!-- 各个话题 -->
+        <view class="topics">
+          <view class="box-title">
+            <image src="/image/41.png"></image>
+            <view class="netName">
+              <text>风一样的女子</text>
+              <text class="upTime">30分钟前</text>
+            </view>
+          </view>
+          <view class="topic-box">
+            <navigator url="./topic">
+              <view class="box-contain">
+                <text class="title">[吐槽]小蓝单车的押金你们都退了吗。</text>
+                <view class="detail">
+                  小蓝单车押金申请退款都快一个月了，进度还是在审核，什么鬼？你们都退出来了吗？？？
+                </view>
+                <image src="/image/b1.jpg"></image>
+              </view>
+            </navigator>
+            <view class="tips">
+              <view class="likes">
+                <image src="{{praiseLove?'/image/icon_praise_sel.png':'/image/icon_praise.png'}}" @tap="givePraise"></image>
+                <text @tap="givePraise">{{praiseNums}}</text>
+              </view>
+              <view class="comments">
+                <image src="/image/icon_pl.png" @tap="comments"></image>
+                <text @tap="comments">123</text>
+              </view>
+            </view>
+          </view>
+          <view class="fewComments">
+            <view class="showComments">
+              <view>
+                <text>呢称：</text>
+                <text class="reply">山东快书看到了才健康</text>
+              </view>
+              <view>
+                <text>呢称：</text>
+                <text class="reply">山东快书看到了才健康</text>
+              </view>
+              <view>
+                <text>呢称：</text>
+                <text class="reply">山东快书看到了才健康</text>
+              </view>
+              <view>
+                <text>呢称：</text>
+                <text class="reply">山东快书看到了才健康</text>
+              </view>
+              <view>
+                <text>呢称：</text>
+                <text class="reply">山东快书看到了才健康</text>
+              </view>
+              <navigator url="./topic">
+                <view class="allComs" @tap="searchAllComs">
+                  查看全部<text>11</text>条留言
+                </view>
+              </navigator>
+            </view>
+          </view>
+        </view>
+
+        <!--快速评论-->
+        <view wx:if="{{anonymous}}" class="quicCom">
+          <view class="myReply">
+            <image src="/image/31.png"></image>
+            <input placeholder="点击输入..."></input>
+            <button @tap="pubCom" class="publish">发表</button>
+          </view>
+          <view wx:if="{{anony}}" class="anony">
+            <view>
+              <image src="/image/41.png"></image>
+              <text>张三丰</text>
+              <image @tap="comPush" src="{{publisher?'/image/icon_unsel.png':'/image/icon_sel.png'}}"></image>
+            </view>
+            <view>
+              <image src="/image/41.png"></image>
+              <text>匿名评论</text>
+              <image @tap="comPush" src="{{publisher?'/image/icon_sel.png':'/image/icon_unsel.png'}}"></image>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <!-- 圈子 -->
+      <view class="{{selectCircle?'show':'hidden'}}">
+        <!-- 最新活动 -->
+        <view class="latest-active">
+          <navigator url="./circle">
+            <image src="/image/b1.jpg"></image>
+            <view class="title-row">
+              <text class="title">激情世界杯狂欢购-1折抢购</text>
+            </view>
+            <view class="showComments">
+              <view>
+                <text>时间：</text>
+                <text class="reply">2018-01-27 13:00-15:00</text>
+              </view>
+              <view>
+                <text>地点：</text>
+                <text class="reply">华润深圳湾体育中心“春茧”体育馆</text>
+              </view>
+              <view>
+                <text>人群：</text>
+                <text class="reply">所有人</text>
+              </view>
+              <view>
+                <text>费用：</text>
+                <text class="reply">免费</text>
+              </view>
+              <view class="signs">
+                <text class="nums">243人</text>
+                <text>报名</text>
+              </view>
+            </view>
+          </navigator>
+        </view>
+        <!-- 俱乐部 -->
+        <view class="clubs">
+          <navigator url="./circle">
+            <view class="club">
+              <image src="/image/41.png"></image>
+              <view class="netName">
+                <text class="setTime">成立时间：2018.04.05</text>
+                <text class="title">松湖智谷足球俱乐部</text>
+                <view>
+                  已加入成员：
+                  <text class="num">124人</text>
+                </view>
+              </view>
+              <button class="addIn">+ 加入</button>
+            </view>
+            <view class="intro">
+              简介：<text>松湖智谷足球俱乐部是由松湖智谷园区足球爱好者自行发起成立，欢迎园区志同道合者加入。</text>
+            </view>
+          </navigator>
+        </view>
+
+        <!-- 俱乐部 -->
+        <view class="clubs">
+          <navigator url="./circle">
+            <view class="club">
+              <image src="/image/41.png"></image>
+              <view class="netName">
+                <text class="setTime">成立时间：2018.04.05</text>
+                <text class="title">松湖智谷足球俱乐部</text>
+                <view>
+                  已加入成员：
+                  <text class="num">124人</text>
+                </view>
+              </view>
+              <button class="addIn">+ 加入</button>
+            </view>
+            <view class="intro">
+              简介：<text>松湖智谷足球俱乐部是由松湖智谷园区足球爱好者自行发起成立，欢迎园区志同道合者加入。</text>
+            </view>
+          </navigator>
+        </view>
+        <!-- 俱乐部 -->
+        <view class="clubs">
+          <navigator url="./circle">
+            <view class="club">
+              <image src="/image/41.png"></image>
+              <view class="netName">
+                <text class="setTime">成立时间：2018.04.05</text>
+                <text class="title">松湖智谷足球俱乐部</text>
+                <view>
+                  已加入成员：
+                  <text class="num">124人</text>
+                </view>
+              </view>
+              <button class="addIn">+ 加入</button>
+            </view>
+            <view class="intro">
+              简介：<text>松湖智谷足球俱乐部是由松湖智谷园区足球爱好者自行发起成立，欢迎园区志同道合者加入。</text>
+            </view>
+          </navigator>
+        </view>
+        <!-- 俱乐部 -->
+        <view class="clubs">
+          <navigator url="./circle">
+            <view class="club">
+              <image src="/image/41.png"></image>
+              <view class="netName">
+                <text class="setTime">成立时间：2018.04.05</text>
+                <text class="title">松湖智谷足球俱乐部</text>
+                <view>
+                  已加入成员：
+                  <text class="num">124人</text>
+                </view>
+              </view>
+              <button class="addIn">+ 加入</button>
+            </view>
+            <view class="intro">
+              简介：<text>松湖智谷足球俱乐部是由松湖智谷园区足球爱好者自行发起成立，欢迎园区志同道合者加入。</text>
+            </view>
+          </navigator>
+        </view>
+      </view>
+    </view>
+  </view>
+
+</template>
+
+<script>
+  import wepy from "wepy";
+  import api from "./api/homeApi"
+
+  export default class Index extends wepy.page {
+    config = {
+      navigationBarTextStyle: "white",
+      navigationBarBackgroundColor: "#000",
+      navigationBarTitleText: "社交"
+    };
+    components = {};
+
+    data = {
+      selectTopic: true,     //话题
+      selectCircle: false,   //圈子
+      anonymous:false,       //快速评论
+      anony:false,           //选实名还是匿名发布
+      praiseLove:false,      //点赞
+      praiseNums:135,
+      publisher:false,       //发布人方式
+    };
+
+    computed = {};
+
+    methods = {
+      selectTopic(){
+        this.selectCircle = false;
+        this.selectTopic = true;
+      },
+      selectCircle(){
+        this.selectTopic = false;
+        this.selectCircle = true;
+      },
+      comments(){
+        this.anonymous=!this.anonymous;
+      },
+      comPush(){
+        this.anony=false;
+
+        this.anonymous=false;
+      },
+      pubCom(){
+        this.anony=true;
+      },
+      givePraise(){
+        this.praiseLove=!this.praiseLove;
+        if(this.praiseLove){
+          this.praiseNums++;
+        }else{
+          this.praiseNums--;
+        }
+      }
+    };
+
+    events = {};
+
+
+    onLoad() {
+      wx.setStorageSync("token", "OWVlNzRjN2NkMWZkNDI4NTgyMGUyMmFlY2VmYjhkZmU=");
+      api.getAllGarden({}).then((res)=>{
+           console.log(res);
+      })
+    }
+
+  }
+</script>

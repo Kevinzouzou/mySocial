@@ -1,0 +1,106 @@
+<style lang="less">
+  @import './asserts/style/base.less';
+
+</style>
+
+<script>
+  import wepy from 'wepy';
+  import 'wepy-async-function';
+  import {setStore} from 'wepy-redux';
+  import configStore from './store';
+
+  const store = configStore();
+  setStore(store);
+
+  export default class extends wepy.app {
+    config = {
+      pages: [
+        'pages/tabBar/social/index',  //社交 主页
+        'pages/tabBar/index', //首页
+        'pages/tabBar/service', //服务
+        'pages/tabBar/social/circle', //社交 圈子详情
+        'pages/tabBar/social/activity',  //社交 活动详情
+        'pages/tabBar/social/number',  //社交 圈子成员
+        'pages/tabBar/social/topic',  //社交 话题详情
+        'pages/tabBar/social/releaseTopic',  //社交 发布话题
+        'pages/tabBar/social/square',  //社交 广场详情
+        'pages/tabBar/social/inform'   //社交 广场举报
+      ],
+      subPackages: [
+        {
+          root: 'pages/component/',
+          pages: [
+            'notice',  //园区公告
+            'carService/index',  //停车服务
+          ]
+        }
+      ],
+      window: {
+        backgroundTextStyle: "dark",
+        navigationBarBackgroundColor: '#3DAEFF',
+        navigationBarTextStyle: 'black',
+        backgroundColor:'#f4f4f4',
+        enablePullDownRefresh: true
+      },
+      tabBar: {
+        color: '#CBCBCB',
+        borderStyle: 'white',
+        selectedColor: '#4EB8FF',
+        list: [
+          {
+            pagePath: 'pages/tabBar/index',
+            text: '首页',
+            iconPath: 'asserts/images/home.png',
+            'selectedIconPath': 'asserts/images/home_sel.png'
+          },{
+            pagePath: 'pages/tabBar/service',
+            text: '服务',
+            iconPath: 'asserts/images/home.png',
+            'selectedIconPath': 'asserts/images/home_sel.png'
+          },
+          {
+            pagePath: 'pages/tabBar/social/index',
+            text: '社交',
+            iconPath: 'asserts/images/ser.png',
+            selectedIconPath: 'asserts/images/ser_sel.png'
+          }
+        ]
+      },
+      networkTimeout: {
+        request: 10000,
+        connectSocket: 10000,
+        uploadFile: 10000,
+        downloadFile: 10000
+      },
+      debug: false
+    };
+
+    globalData = {
+      userInfo: null,
+      token:''
+    };
+
+    constructor() {
+      super();
+      this.use('requestfix');
+    }
+
+    onLaunch() {
+      wx.setStorageSync('parkId','8969878f1f1149e6a7afae38636c0abc');
+    }
+
+    getUserInfo(cb) {
+      const that = this;
+      if (this.globalData.userInfo) {
+        return this.globalData.userInfo;
+      }
+      wepy.getUserInfo({
+        success(res) {
+          console.log(res)
+          that.globalData.userInfo = res.userInfo;
+          cb && cb(res.userInfo);
+        }
+      });
+    }
+  }
+</script>
