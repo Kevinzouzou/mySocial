@@ -68,12 +68,22 @@
     margin: ~"10rpx" 1.66%;
   }
   .tips{
+    height:  ~"120rpx";
+    line-height:  ~"100rpx";
     padding: 0 ~"40rpx";
-    margin: ~"17rpx" 0  ~"17rpx";
+    border-bottom:  ~"20rpx" solid #ededed;
   }
   .tips view{
+    width: 33%;
+    text-align: center;
     display: inline-block;
-    margin-right:  ~"40rpx";
+  }
+  .tips view icon{
+    float: right;
+    display: inline-block;
+    height:  ~"27rpx";
+    border:  ~"1rpx" solid #c8c8c8;
+    margin-top:  ~"36rpx";
   }
   .tips view image,.allComments .praise image,.allComments .toReply image{
     width: ~"48rpx";
@@ -118,6 +128,7 @@
     margin-top:~"13rpx";
     color:#999;
   }
+  .theCom .replys view{margin-bottom: ~"15rpx";}
   .alls{
     height:  ~"108rpx";
     padding:  ~"37rpx"  ~"40rpx";
@@ -267,185 +278,204 @@
 </style>
 <template>
   <view class="topicDetails">
-    <view class="box-title">
-      <image src="/image/41.png"></image>
-      <view class="netName">
-        <text>风一样的女子</text>
-        <text class="upTime">30分钟前</text>
+    <block wx:for="{{topicList}}" wx:key="key" item="item">
+      <view class="box-title">
+        <image src="{{item.addInfo.userList.userUrl}}"></image>
+        <view class="netName">
+          <text>{{item.addInfo.userList.userNick}}</text>
+          <text class="upTime">{{item.updateTime}}</text>
+        </view>
       </view>
-    </view>
-    <view class="topic-box">
-      <view class="box-contain">
-        <text class="title">[吐槽]小蓝单车的押金你们都退了吗。</text>
-        <view class="detail">
-          小蓝单车押金申请退款都快一个月了，进度还是在审核，什么鬼？你们都退出来了吗？？？
-        </view>
-        <view class="one">
-          <image src="/image/b1.jpg"></image>
-        </view>
-        <view class="morePic">
-          <image src="/image/b1.jpg"></image>
-          <image src="/image/b1.jpg"></image>
-          <image src="/image/b1.jpg"></image>
-          <image src="/image/b1.jpg"></image>
-          <image src="/image/b1.jpg"></image>
+      <view class="topic-box">
+        <view class="box-contain">
+          <text class="title">{{item.title}}</text>
+          <view class="detail">{{item.content}}</view>
+          <view wx:if="{{item.addInfo.urlList.length===1}}" class="one">
+            <image src="{{item.addInfo.urlList[0]}}"></image>
+          </view>
+          <view wx:else  class="morePic">
+            <repeat for="{{item.addInfo.urlList}}" item="childItem">
+              <image src="{{childItem}}"></image>
+            </repeat>
+          </view>
         </view>
       </view>
       <view class="tips">
         <view class="likes">
           <image src="{{praiseLove?'/image/icon_praise_sel.png':'/image/icon_praise.png'}}" @tap="givePraise"></image>
-          <text @tap="givePraise">{{praiseNums}}</text>
+          <text @tap="givePraise">点赞</text>
+          <icon></icon>
+        </view>
+        <view class="toReply">
+          <image src="/image/icon_pl.png" @tap="reply"></image>
+          <text @tap="reply">评论</text>
+          <icon></icon>
         </view>
         <view class="moreAc">
           <text @tap="moreActions">更多</text>
         </view>
       </view>
-    </view>
+    </block>
+
     <view class="alls">
       <text class="title">全部评论</text>
-      <text class="num">（6）</text>
+      <text class="num">（{{commentsAllList.length}}）</text>
     </view>
     <view class="allComments">
-      <view class="oneCom">
-        <view class="box-title">
-          <image src="/image/41.png"></image>
-          <view class="netName">
-            <text>风一样的女子</text>
-            <text class="upTime">30分钟前</text>
-          </view>
-          <view class="tipsRight">
-            <view class="toReply active">
-              <image src="/image/icon_pl.png" @tap="reply"></image>
-              <text @tap="reply">回复</text>
+      <block wx:for="{{commentsAllList}}" wx:key="key" item="item">
+        <view class="oneCom">
+          <view class="box-title">
+            <image src="{{item.addInfo.userList.userUrl}}"></image>
+            <view class="netName">
+              <text>{{item.addInfo.userList.userNick}}</text>
+              <text class="upTime">{{item.updateTime}}</text>
             </view>
-            <view class="praise active">
-              <image src="{{comPraise?'/image/icon_pl_praise_sel.png':'/image/icon_pl_praise.png'}}" @tap="giveLike"></image>
-              <text @tap="giveLike">{{comPraiseNums}}</text>
-            </view>
-          </view>
-        </view>
-        <view class="theCom">
-          如在下边这个例子中，点击 inner view 会先后调用handleTap3和handleTap2(因为tap事件会冒泡到 middle view，而 middle view 阻止了 tap 事件冒泡，不再向父节点传递)
-        </view>
-      </view>
-      <view class="oneCom">
-        <view class="box-title">
-          <image src="/image/41.png"></image>
-          <view class="netName">
-            <text>风一样的女子</text>
-            <text class="upTime">30分钟前</text>
-          </view>
-          <view class="tipsRight">
-            <view class="toReply">
-              <image src="/image/icon_pl.png" @tap="reply"></image>
-              <text @tap="reply">回复</text>
-            </view>
-            <view class="praise">
-              <image src="/image/icon_pl_praise.png" @tap="giveLike"></image>
-              <text @tap="giveLike">135</text>
+            <view class="tipsRight">
+              <view class="toReply active">
+                <image src="/image/icon_pl.png" @tap="replyThis({{index}})"></image>
+                <text @tap="replyThis({{index}})">回复</text>
+              </view>
+              <view class="praise active">
+                <image src="{{item.comPraise?'/image/icon_pl_praise_sel.png':'/image/icon_pl_praise.png'}}" @tap="givePraiseThis({{index}})"></image>
+                <text @tap="givePraiseThis({{index}})">{{item.addInfo.praiseNums}}</text>
+              </view>
             </view>
           </view>
-        </view>
-        <view class="theCom">
-          如在下边这个例子中，点击 inner view 会先后调用handleTap3和handleTap2(因为tap事件会冒泡到 middle view，而 middle view 阻止了 tap 事件冒泡，不再向父节点传递)
-        </view>
-      </view>
-      <view class="oneCom">
-        <view class="box-title">
-          <image src="/image/41.png"></image>
-          <view class="netName">
-            <text>风一样的女子</text>
-            <text class="upTime">30分钟前</text>
-          </view>
-          <view class="tipsRight">
-            <view class="toReply">
-              <image src="/image/icon_pl.png" @tap="reply"></image>
-              <text @tap="reply">回复</text>
-            </view>
-            <view class="praise">
-              <image src="/image/icon_pl_praise.png" @tap="giveLike"></image>
-              <text @tap="giveLike">135</text>
-            </view>
+          <view class="theCom">
+            {{item.content}}
+            <block wx:if="{{item.commentReply}}">
+              <view class="replys">
+                <repeat for="{{item.commentReply}}" item="childItem">
+                  <view @tap="replySomebody({{index}})">
+                    <text class="theBody">@{{childItem.user}} </text>
+                    <text class="reply">{{childItem.reply}}</text>
+                  </view>
+                </repeat>
+              </view>
+            </block>
+
           </view>
         </view>
-        <view class="theCom">
-          回复 <text class="theBody">@我生命中的阳光</text> 不好意思哈...
-          <view class="replys">
-            <text class="theBody">@我生命中的阳光 </text>
-            <text class="reply">有点讨厌这种提醒，本来根本不会注意</text>
-          </view>
-        </view>
-      </view>
-      <view class="oneCom">
-        <view class="box-title">
-          <image src="/image/41.png"></image>
-          <view class="netName">
-            <text>风一样的女子</text>
-            <text class="upTime">30分钟前</text>
-          </view>
-          <view class="tipsRight">
-            <view class="toReply active">
-              <image src="/image/icon_pl.png" @tap="reply"></image>
-              <text @tap="reply">回复</text>
-            </view>
-            <view class="praise active">
-              <image src="/image/icon_pl_praise_sel.png" @tap="giveLike"></image>
-              <text @tap="giveLike">135</text>
-            </view>
-          </view>
-        </view>
-        <view class="theCom">
-          如在下边这个例子中，点击 inner view 会先后调用handleTap3和handleTap2(因为tap事件会冒泡到 middle view，而 middle view 阻止了 tap 事件冒泡，不再向父节点传递)
-        </view>
-      </view>
-      <view class="oneCom">
-        <view class="box-title">
-          <image src="/image/41.png"></image>
-          <view class="netName">
-            <text>风一样的女子</text>
-            <text class="upTime">30分钟前</text>
-          </view>
-          <view class="tipsRight">
-            <view class="toReply active">
-              <image src="/image/icon_pl.png" @tap="reply"></image>
-              <text @tap="reply">回复</text>
-            </view>
-            <view class="praise active">
-              <image src="/image/icon_pl_praise_sel.png" @tap="giveLike"></image>
-              <text @tap="giveLike">135</text>
-            </view>
-          </view>
-        </view>
-        <view class="theCom">
-          如在下边这个例子中，点击 innerView 会先后调用handleTap3和handleTap2(因为tap事件会冒泡到 middle view，而 middle view 阻止了 tap 事件冒泡，不再向父节点传递)
-        </view>
-      </view>
-      <view class="oneCom">
-        <view class="box-title">
-          <image src="/image/41.png"></image>
-          <view class="netName">
-            <text>风一样的女子</text>
-            <text class="upTime">30分钟前</text>
-          </view>
-          <view class="tipsRight">
-            <view class="toReply active">
-              <image src="/image/icon_pl.png" @tap="reply"></image>
-              <text @tap="reply">回复</text>
-            </view>
-            <view class="praise active">
-              <image src="/image/icon_pl_praise_sel.png" @tap="giveLike"></image>
-              <text @tap="giveLike">135</text>
-            </view>
-          </view>
-        </view>
-        <view class="theCom">
-          回复 <text class="theBody">@我生命中的阳光</text> 不好意思哈...
-          <view class="replys">
-            <text class="theBody">@我生命中的阳光 </text>
-            <text class="reply">有点讨厌这种提醒，本来根本不会注意</text>
-          </view>
-        </view>
-      </view>
+      </block>
+
+      <!--<view class="oneCom">-->
+        <!--<view class="box-title">-->
+          <!--<image src="/image/41.png"></image>-->
+          <!--<view class="netName">-->
+            <!--<text>风一样的女子</text>-->
+            <!--<text class="upTime">30分钟前</text>-->
+          <!--</view>-->
+          <!--<view class="tipsRight">-->
+            <!--<view class="toReply">-->
+              <!--<image src="/image/icon_pl.png" @tap="reply"></image>-->
+              <!--<text @tap="reply">回复</text>-->
+            <!--</view>-->
+            <!--<view class="praise">-->
+              <!--<image src="/image/icon_pl_praise.png" @tap="giveLike"></image>-->
+              <!--<text @tap="giveLike">135</text>-->
+            <!--</view>-->
+          <!--</view>-->
+        <!--</view>-->
+        <!--<view class="theCom">-->
+          <!--如在下边这个例子中，点击 inner view 会先后调用handleTap3和handleTap2(因为tap事件会冒泡到 middle view，而 middle view 阻止了 tap 事件冒泡，不再向父节点传递)-->
+        <!--</view>-->
+      <!--</view>-->
+      <!--<view class="oneCom">-->
+        <!--<view class="box-title">-->
+          <!--<image src="/image/41.png"></image>-->
+          <!--<view class="netName">-->
+            <!--<text>风一样的女子</text>-->
+            <!--<text class="upTime">30分钟前</text>-->
+          <!--</view>-->
+          <!--<view class="tipsRight">-->
+            <!--<view class="toReply">-->
+              <!--<image src="/image/icon_pl.png" @tap="reply"></image>-->
+              <!--<text @tap="reply">回复</text>-->
+            <!--</view>-->
+            <!--<view class="praise">-->
+              <!--<image src="/image/icon_pl_praise.png" @tap="giveLike"></image>-->
+              <!--<text @tap="giveLike">135</text>-->
+            <!--</view>-->
+          <!--</view>-->
+        <!--</view>-->
+        <!--<view class="theCom">-->
+          <!--回复 <text class="theBody">@我生命中的阳光</text> 不好意思哈...-->
+          <!--<view class="replys">-->
+            <!--<text class="theBody">@我生命中的阳光 </text>-->
+            <!--<text class="reply">有点讨厌这种提醒，本来根本不会注意</text>-->
+          <!--</view>-->
+        <!--</view>-->
+      <!--</view>-->
+      <!--<view class="oneCom">-->
+        <!--<view class="box-title">-->
+          <!--<image src="/image/41.png"></image>-->
+          <!--<view class="netName">-->
+            <!--<text>风一样的女子</text>-->
+            <!--<text class="upTime">30分钟前</text>-->
+          <!--</view>-->
+          <!--<view class="tipsRight">-->
+            <!--<view class="toReply active">-->
+              <!--<image src="/image/icon_pl.png" @tap="reply"></image>-->
+              <!--<text @tap="reply">回复</text>-->
+            <!--</view>-->
+            <!--<view class="praise active">-->
+              <!--<image src="/image/icon_pl_praise_sel.png" @tap="giveLike"></image>-->
+              <!--<text @tap="giveLike">135</text>-->
+            <!--</view>-->
+          <!--</view>-->
+        <!--</view>-->
+        <!--<view class="theCom">-->
+          <!--如在下边这个例子中，点击 inner view 会先后调用handleTap3和handleTap2(因为tap事件会冒泡到 middle view，而 middle view 阻止了 tap 事件冒泡，不再向父节点传递)-->
+        <!--</view>-->
+      <!--</view>-->
+      <!--<view class="oneCom">-->
+        <!--<view class="box-title">-->
+          <!--<image src="/image/41.png"></image>-->
+          <!--<view class="netName">-->
+            <!--<text>风一样的女子</text>-->
+            <!--<text class="upTime">30分钟前</text>-->
+          <!--</view>-->
+          <!--<view class="tipsRight">-->
+            <!--<view class="toReply active">-->
+              <!--<image src="/image/icon_pl.png" @tap="reply"></image>-->
+              <!--<text @tap="reply">回复</text>-->
+            <!--</view>-->
+            <!--<view class="praise active">-->
+              <!--<image src="/image/icon_pl_praise_sel.png" @tap="giveLike"></image>-->
+              <!--<text @tap="giveLike">135</text>-->
+            <!--</view>-->
+          <!--</view>-->
+        <!--</view>-->
+        <!--<view class="theCom">-->
+          <!--如在下边这个例子中，点击 innerView 会先后调用handleTap3和handleTap2(因为tap事件会冒泡到 middle view，而 middle view 阻止了 tap 事件冒泡，不再向父节点传递)-->
+        <!--</view>-->
+      <!--</view>-->
+      <!--<view class="oneCom">-->
+        <!--<view class="box-title">-->
+          <!--<image src="/image/41.png"></image>-->
+          <!--<view class="netName">-->
+            <!--<text>风一样的女子</text>-->
+            <!--<text class="upTime">30分钟前</text>-->
+          <!--</view>-->
+          <!--<view class="tipsRight">-->
+            <!--<view class="toReply active">-->
+              <!--<image src="/image/icon_pl.png" @tap="reply"></image>-->
+              <!--<text @tap="reply">回复</text>-->
+            <!--</view>-->
+            <!--<view class="praise active">-->
+              <!--<image src="/image/icon_pl_praise_sel.png" @tap="giveLike"></image>-->
+              <!--<text @tap="giveLike">135</text>-->
+            <!--</view>-->
+          <!--</view>-->
+        <!--</view>-->
+        <!--<view class="theCom">-->
+          <!--回复 <text class="theBody">@我生命中的阳光</text> 不好意思哈...-->
+          <!--<view class="replys">-->
+            <!--<text class="theBody">@我生命中的阳光 </text>-->
+            <!--<text class="reply">有点讨厌这种提醒，本来根本不会注意</text>-->
+          <!--</view>-->
+        <!--</view>-->
+      <!--</view>-->
     </view>
     <view wx:if="{{moreAction}}" class="moreDo">
       <navigator url="./inform">
@@ -491,12 +521,87 @@
     data = {
       moreAction:false,
       praiseLove:false,    //点赞
-      praiseNums:135,
+      // praiseNums:135,
       anonymous:false,       //回复
       anony:false,           //选实名还是匿名
       publisher:false,       //回复人方式
       comPraise:false,       //评论点赞
       comPraiseNums:100,
+      topicList:[
+        {
+          praiseLove:false,
+          anonymous:false,
+          // userUrl:"/image/41.png",
+          // userName:"风一样的女子",
+          updateTime:"30分钟前",
+          title:"[吐槽]小蓝单车的押金你们都退了吗。",
+          content:"小蓝单车押金申请退款都快一个月了，进度还是在审核，什么鬼？你们都退出来了吗？？？",
+          contUrl:"/image/b1.jpg",
+          addInfo:{
+            userList:{
+              userId:1,
+              userNick:"风一样的女子",
+              userUrl:"/image/41.png"
+            },
+            urlList:[
+              "/image/b1.jpg",
+              "/image/b1.jpg",
+              "/image/b1.jpg",
+              "/image/b1.jpg"
+            ],
+            praiseNums:100,
+            comNums:100
+          }
+        }
+      ],
+      commentsAllList:[
+        {
+          comPraise:false,
+          updateTime:"30分钟前",
+          content:"如在下边这个例子中，点击 inner view 会先后调用handleTap3和handleTap2(因为tap事件会冒泡到 middle view，而 middle view 阻止了 tap 事件冒泡，不再向父节点传递)",
+          addInfo:{
+            praiseNums:110,
+            userList:{
+              userId:1,
+              userNick:"风一样的女子",
+              userUrl:"/image/41.png"
+            }
+          }
+        },
+        {
+          comPraise:false,
+          commentReply:[
+            {user:"我生命中的阳光",reply:"有点讨厌这种提醒，本来根本不会注意"}
+          ],
+          updateTime:"50分钟前",
+          content:"如在下边这个例子中，点击 inner view 会先后调用handleTap3和handleTap2(因为tap事件会冒泡到 middle view，而 middle view 阻止了 tap 事件冒泡，不再向父节点传递)",
+          addInfo:{
+            praiseNums:10,
+            userList:{
+              userId:1,
+              userNick:"风一样",
+              userUrl:"/image/41.png"
+            }
+          }
+        },
+        {
+          comPraise:false,
+          commentReply:[
+            {user:"我生命中的阳光",reply:"有点讨厌这种提醒，本来根本不会注意"},
+            {user:"冬天里的一把火",reply:"有点讨厌，确实不喜欢"}
+          ],
+          updateTime:"60分钟前",
+          content:"如在下边这个例子中，点击 inner view 会先后调用handleTap3和handleTap2(因为tap事件会冒泡到 middle view，而 middle view 阻止了 tap 事件冒泡，不再向父节点传递)",
+          addInfo:{
+            praiseNums:100,
+            userList:{
+              userId:1,
+              userNick:"烈焰下的一片叶",
+              userUrl:"/image/41.png"
+            }
+          }
+        },
+      ]
     };
 
     computed = {};
@@ -507,10 +612,18 @@
       },
       givePraise(){
         this.praiseLove=!this.praiseLove;
-        if(this.praiseLove){
-          this.praiseNums++;
+        // if(this.praiseLove){
+        //   this.praiseNums++;
+        // }else{
+        //   this.praiseNums--;
+        // }
+      },
+      givePraiseThis(index){
+        this.commentsAllList[index].comPraise=!this.commentsAllList[index].comPraise;
+        if(this.commentsAllList[index].comPraise){
+          this.commentsAllList[index].addInfo.praiseNums++;
         }else{
-          this.praiseNums--;
+          this.commentsAllList[index].addInfo.praiseNums--;
         }
       },
       giveLike(){
@@ -522,6 +635,12 @@
         }
       },
       reply(){
+        this.anonymous=!this.anonymous;
+      },
+      replyThis(index){
+        this.anonymous=!this.anonymous;
+      },
+      replySomebody(index){
         this.anonymous=!this.anonymous;
       },
       comPush(){

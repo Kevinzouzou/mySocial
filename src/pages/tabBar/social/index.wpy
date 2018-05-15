@@ -354,133 +354,68 @@
         <!-- 热点话题 -->
         <view class="top-title">
           <navigator url="./topic">
-            <image src="/image/b1.jpg"></image>
-            <text class="title">宋庆后曝猛料：施一公请辞清华副校长是因还不起房贷</text>
+            <image src="{{hotTopicList.url}}"></image>
+            <text class="title">{{hotTopicList.title}}</text>
           </navigator>
           <view class="tips">
             <view class="likes">
               <image src="{{praiseLove?'/image/icon_praise_sel.png':'/image/icon_praise.png'}}" @tap="givePraise"></image>
-              <text @tap="givePraise">{{praiseNums}}</text>
+              <text @tap="givePraise">{{hotTopicList.addInfo.praiseNums}}</text>
             </view>
             <view class="comments">
               <image src="/image/icon_pl.png" @tap="comments"></image>
-              <text @tap="comments">123</text>
+              <text @tap="comments">{{hotTopicList.addInfo.comNums}}</text>
             </view>
           </view>
         </view>
         <!-- 各个话题 -->
-        <view class="topics">
-          <view class="box-title">
-            <image src="/image/41.png"></image>
-            <view class="netName">
-              <text>风一样的女子</text>
-              <text class="upTime">30分钟前</text>
-            </view>
-          </view>
-          <view class="topic-box">
-            <navigator url="./topic">
-              <view class="box-contain">
-                <text class="title">[吐槽]小蓝单车的押金你们都退了吗。</text>
-                <view class="detail">
-                  小蓝单车押金申请退款都快一个月了，进度还是在审核，什么鬼？你们都退出来了吗？？？
-                </view>
-                <image src="/image/b1.jpg"></image>
-              </view>
-            </navigator>
-            <view class="tips">
-              <view class="likes">
-                <image src="{{praiseLove?'/image/icon_praise_sel.png':'/image/icon_praise.png'}}" @tap="givePraise"></image>
-                <text @tap="givePraise">{{praiseNums}}</text>
-              </view>
-              <view class="comments">
-                <image src="/image/icon_pl.png" @tap="comments"></image>
-                <text @tap="comments">123</text>
+        <block wx:for="{{topicList}}" wx:key="key" item="item">
+          <view class="topics">
+            <view class="box-title">
+              <image src="{{item.userUrl}}"></image>
+              <view class="netName">
+                <text>{{item.userName}}</text>
+                <text class="upTime">{{item.updateTime}}</text>
               </view>
             </view>
-          </view>
-          <view class="fewComments">
-            <view class="showComments">
-              <view>
-                <text>呢称：</text>
-                <text class="reply">山东快书看到了才健康</text>
-              </view>
-              <view>
-                <text>呢称：</text>
-                <text class="reply">山东快书看到了才健康</text>
-              </view>
-              <view>
-                <text>呢称：</text>
-                <text class="reply">山东快书看到了才健康</text>
-              </view>
-              <view>
-                <text>呢称：</text>
-                <text class="reply">山东快书看到了才健康</text>
-              </view>
-            </view>
-          </view>
-        </view>
-
-        <!-- 各个话题 -->
-        <view class="topics">
-          <view class="box-title">
-            <image src="/image/41.png"></image>
-            <view class="netName">
-              <text>风一样的女子</text>
-              <text class="upTime">30分钟前</text>
-            </view>
-          </view>
-          <view class="topic-box">
-            <navigator url="./topic">
-              <view class="box-contain">
-                <text class="title">[吐槽]小蓝单车的押金你们都退了吗。</text>
-                <view class="detail">
-                  小蓝单车押金申请退款都快一个月了，进度还是在审核，什么鬼？你们都退出来了吗？？？
-                </view>
-                <image src="/image/b1.jpg"></image>
-              </view>
-            </navigator>
-            <view class="tips">
-              <view class="likes">
-                <image src="{{praiseLove?'/image/icon_praise_sel.png':'/image/icon_praise.png'}}" @tap="givePraise"></image>
-                <text @tap="givePraise">{{praiseNums}}</text>
-              </view>
-              <view class="comments">
-                <image src="/image/icon_pl.png" @tap="comments"></image>
-                <text @tap="comments">123</text>
-              </view>
-            </view>
-          </view>
-          <view class="fewComments">
-            <view class="showComments">
-              <view>
-                <text>呢称：</text>
-                <text class="reply">山东快书看到了才健康</text>
-              </view>
-              <view>
-                <text>呢称：</text>
-                <text class="reply">山东快书看到了才健康</text>
-              </view>
-              <view>
-                <text>呢称：</text>
-                <text class="reply">山东快书看到了才健康</text>
-              </view>
-              <view>
-                <text>呢称：</text>
-                <text class="reply">山东快书看到了才健康</text>
-              </view>
-              <view>
-                <text>呢称：</text>
-                <text class="reply">山东快书看到了才健康</text>
-              </view>
+            <view class="topic-box">
               <navigator url="./topic">
-                <view class="allComs" @tap="searchAllComs">
-                  查看全部<text>11</text>条留言
+                <view class="box-contain">
+                  <text class="title">{{item.title}}</text>
+                  <view class="detail">
+                    {{item.content}}
+                  </view>
+                  <image src="{{item.contUrl}}"></image>
                 </view>
               </navigator>
+              <view class="tips">
+                <view class="likes">
+                  <image src="{{item.praiseLove?'/image/icon_praise_sel.png':'/image/icon_praise.png'}}" @tap="toPraise({{index}})"></image>
+                  <text @tap="toPraise({{index}})">{{item.addInfo.praiseNums}}</text>
+                </view>
+                <view class="comments">
+                  <image src="/image/icon_pl.png" @tap="commentTopic({{index}})"></image>
+                  <text @tap="commentTopic({{index}})">{{item.addInfo.comNums}}</text>
+                </view>
+              </view>
+            </view>
+            <view class="fewComments">
+              <view class="showComments">
+                <block wx:for="{{item.addInfo.commentsList}}" item="item" wx:key="key">
+                  <view>
+                    <text>{{item.text}}</text>
+                    <text class="reply">{{item.reply}}</text>
+                  </view>
+                </block>
+                <navigator wx:if="{{item.commentsList.length!==0}}" url="./topic">
+                  <view class="allComs" @tap="searchAllComs">
+                    查看全部<text>{{item.addInfo.comNums}}</text>条留言
+                  </view>
+                </navigator>
+              </view>
             </view>
           </view>
-        </view>
-
+        </block>
         <!--快速评论-->
         <view wx:if="{{anonymous}}" class="quicCom">
           <view class="myReply">
@@ -643,6 +578,76 @@
       praiseLove:false,      //点赞
       praiseNums:135,
       publisher:false,       //发布人方式
+      hotTopicList:{         //热点话题
+        title:"宋庆后曝猛料：施一公请辞清华副校长是因还不起房贷",
+        url:"/image/b1.jpg",
+        addInfo:{
+          praiseNums:135,
+          comNums:112,
+        }
+      },
+      topicList:[
+        {
+          praiseLove:false,
+          anonymous:false,
+          userUrl:"/image/41.png",
+          userName:"风一样的女子",
+          updateTime:"30分钟前",
+          title:"[吐槽]小蓝单车的押金你们都退了吗。",
+          content:"小蓝单车押金申请退款都快一个月了，进度还是在审核，什么鬼？你们都退出来了吗？？？",
+          contUrl:"/image/b1.jpg",
+          addInfo:{
+            praiseNums:100,
+            comNums:100,
+            commentsList:[
+              {text:"昵称：",reply:"山东快书看到了才健康"},
+              {text:"昵称：",reply:"山东快书看到了才健康"},
+              {text:"收到回复：",reply:"山东快书看到了才健康"}
+            ]
+          }
+        },
+        {
+          praiseLove:false,
+          anonymous:false,
+          userUrl:"/image/41.png",
+          userName:"秋风扫落叶",
+          updateTime:"50分钟前",
+          title:"[吐槽]小蓝单车的押金你们都退了吗。",
+          content:"小蓝单车押金申请退款都快一个月了，进度还是在审核，什么鬼？你们都退出来了吗？？？",
+          contUrl:"/image/b1.jpg",
+          addInfo:{
+            praiseNums:100,
+            comNums:110,
+            commentsList:[
+              {text:"昵称：",reply:"山东快书看到了才健康"},
+              {text:"昵称：",reply:"山东快书看到了才健康"},
+              {text:"昵称：",reply:"山东快书看到了才健康"},
+              {text:"收到回复：",reply:"山东快书看到了才健康"}
+            ]
+          }
+        },
+        {
+          praiseLove:false,
+          anonymous:false,
+          userUrl:"/image/41.png",
+          userName:"雪花飘飘",
+          updateTime:"55分钟前",
+          title:"[吐槽]小蓝单车的押金你们都退了吗。",
+          content:"小蓝单车押金申请退款都快一个月了，进度还是在审核，什么鬼？你们都退出来了吗？？？",
+          contUrl:"/image/b1.jpg",
+          addInfo:{
+            praiseNums:100,
+            comNums:120,
+            commentsList:[
+              {text:"昵称：",reply:"山东快书看到了才健康"},
+              {text:"昵称：",reply:"山东快书看到了才健康"},
+              {text:"昵称：",reply:"山东快书看到了才健康"},
+              {text:"昵称：",reply:"山东快书看到了才健康"},
+              {text:"收到回复：",reply:"山东快书看到了才健康"}
+            ]
+          }
+        },
+      ]
     };
 
     computed = {};
@@ -670,10 +675,26 @@
       givePraise(){
         this.praiseLove=!this.praiseLove;
         if(this.praiseLove){
-          this.praiseNums++;
+          this.hotTopicList.addInfo.praiseNums++;
         }else{
-          this.praiseNums--;
+          this.hotTopicList.addInfo.praiseNums--;
         }
+      },
+      toPraise(index){
+        this.topicList[index].praiseLove=!this.topicList[index].praiseLove;
+        if(this.topicList[index].praiseLove){
+          this.topicList[index].addInfo.praiseNums++;
+        }else{
+          this.topicList[index].addInfo.praiseNums--;
+        }
+      },
+      commentTopic(index){
+        this.topicList[index].anonymous=!this.topicList[index].anonymous;
+        // if(this.topicList[index].anonymous){
+        //   this.topicList[index].addInfo.comNums++;
+        // }else{
+        //   this.topicList[index].addInfo.comNums--;
+        // }
       }
     };
 
