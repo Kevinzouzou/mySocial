@@ -10,44 +10,30 @@ let ppSallow = createInStance();
 
 
 
-//module.exports = ppSallow;
+//module.exports = ppSwallow;
 
 // 返回在vue模板中的调用接口
 export default {
   get: function (url, params, option) {
-    let defaultRequest =ppSallow.config.getHeader();
-    let request = util.copyObject(defaultRequest,option) ;
-    request.url = url;
-    request.data = params;
-    request.method = 'GET';
-    return ppSallow.baseHttp(url, params, request);
+    return ppSallow.baseHttp(url, params, option,'GET');
   },
   post: function (url, params, option) {
-    let defaultRequest =ppSallow.config.getHeader();
-    let request = util.copyObject(defaultRequest,option) ;
-    request.url = url;
-    request.data = params;
-    request.method = 'POST';
-    return ppSallow.baseHttp(url, params, request);
+    return ppSallow.baseHttp(url, params, option,'POST');
   },
   put: function (url, params, option) {
-    let defaultRequest =ppSallow.config.getHeader();
-    let request = util.copyObject(defaultRequest,option) ;
-    request.url = url;
-    request.data = params;
-    request.method = 'PUT';
-    return ppSallow.baseHttp(url, params, request);
+    return ppSallow.baseHttp(url, params, option,'PUT');
+  },
+  delete: function (url, params, option) {
+    return ppSallow.baseHttp(url, params, option,'DELETE');
   },
 
   other: function (url, params, method, option) {
-    let request = Object.assign({}, ppSallow.config.defaultRequest, option);
-    request.url = url;
-    request.data = params;
-    request.method = method;
-    return ppSallow._wxHttp(request);
+    return ppSallow.baseHttp(url, params, option,method);
   },
 
-  uploadFile: function (url, params, request) {
+  uploadFile: function (url, params, option) {
+    let defaultRequest =ppSallow.config.getRequest();
+    let request = util.copyObject(defaultRequest,option) ;
     request.url = url;
     let arr = util.getObjProperty(params);
     request.name = arr[0];

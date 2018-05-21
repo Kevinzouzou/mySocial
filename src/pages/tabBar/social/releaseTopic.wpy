@@ -5,6 +5,7 @@
   page{
     background: #fff;
     .topicCate{
+      display: block;
       position: fixed;
       z-index: 100;
       width: 100%;
@@ -52,6 +53,7 @@
         transform:translate(-50%);
       }
     }
+    .hidden{display: none;}
     .release{
       font-family: @family-light;
       background: #fff;
@@ -115,7 +117,13 @@
           line-height: ~"128rpx";
           font-size: ~"60rpx";
           display:inline-block;
-
+        }
+        image{
+          width:  30%;
+          height:  ~"150rpx";
+          margin:  ~"30rpx"  1.6% 0;
+          vertical-align: baseline;
+          display:inline-block;
         }
         text{
           color: #9b9b9b;
@@ -148,7 +156,6 @@
         }
       }
       .send{
-        position: fixed;
         bottom:  ~"30rpx";
         width:  ~"690rpx";
         height:  ~"80rpx";
@@ -165,49 +172,51 @@
   }
 </style>
 <template>
-  <view class="topicCate">
+  <view wx:if="{{choiceTopic}}" class="topicCate">
     <view class="title">话题类别</view>
     <view class="category">
-      <button class="teasing active">吐槽</button>
-      <button class="travel">出游</button>
-      <button class="friend">交友</button>
-      <button class="roommates">合租</button>
-      <button class="spellList">拼单</button>
+      <block wx:for="{{topicCateList}}" wx:key="key" item="item">
+        <button @tap="choiceThisTopic({{index}})">{{item}}</button>
+      </block>
     </view>
     <text @tap="back" class="cancel">x</text>
   </view>
   <view class="release">
     <view class="topTitle">
-      <input type="text" placeholder-class="titlePh" placeholder="输入标题...">
+      <input type="text" maxlength="30" @input="input" placeholder-class="titlePh" placeholder="输入标题...">
       <text>0/30</text>
     </view>
     <view class="section">
-      <textarea placeholder-class="sectionPh" placeholder="请输入正文..."></textarea>
+      <textarea maxlength="200" @input="textarea" placeholder-class="sectionPh" placeholder="请输入正文..."></textarea>
       <text>0/200</text>
     </view>
     <view class="upPic">
-      <button class="up">+</button>
+      <repeat for="{{tempFilePaths}}" item="childrem" wx:key="index">
+        <image src="{{childrem}}" ></image>
+      </repeat>
+      <button wx:if="{{tempFileLen}}" class="up" @tap="upImage">+</button>
       <text>0/6</text>
     </view>
     <view class="anonymous">
       <view>
         <image src="/image/41.png"></image>
         <text>张三丰</text>
-        <image src="/image/icon_sel.png"></image>
+        <image @tap="namePush" src="{{publisher?'/image/icon_unsel.png':'/image/icon_sel.png'}}"></image>
       </view>
       <view>
-        <image src="/image/41.png"></image>
+        <image src="/image/icon_group.png"></image>
         <text>匿名评论</text>
-        <image src="/image/icon_unsel.png"></image>
+        <image @tap="anonyPush" src="{{publisher?'/image/icon_sel.png':'/image/icon_unsel.png'}}"></image>
       </view>
     </view>
-    <button class="send">发布</button>
+    <button class="send" @tap="send">发布</button>
   </view>
 
 </template>
 
 <script>
     import wepy from 'wepy';
+    import api from './api/homeApi'
 
     export default class Index extends wepy.page {
         config = {
@@ -217,17 +226,94 @@
         };
         components = {};
 
-        data = {};
+        data = {
+          token:wx.getStorageSync('token'),
+          parkId:wx.getStorageSync('parkId'),
+          isRealName:1,
+          inputValue:'',            //标题
+          textValue:'',             //内容
+          choiceTopic:true,
+          tempFileLen:true,         //图片上传不超过6张显示
+          publisher:false,
+          topicCateList:[
+            "吐槽",
+            "出游",
+            "交友",
+            "合租",
+            "拼单"
+          ],
+          tempFilePaths:[],   //上传图片最多6张
+          type:'',            //类别
+        };
 
         computed = {};
 
         methods = {
           back(){
-            // wx.switchTab({
-            //   url: './index'
-            // })
             wx.navigateBack({
               delta: 1
+            })
+          },
+          choiceThisTopic(index){
+            this.choiceTopic=false;
+            this.type=this.topicCateList[index];
+          },
+          upImage(){
+            let self= this;
+            wx.chooseImage({
+              success: function(res) {
+                let tempFilePaths = res.tempFilePaths;
+                api.uploaImg({ file: tempFilePaths[0] }) .then((res)=>{
+                  let img = JSON.parse(res.data);
+                  let tempImg = img.responseList.imgUrl;
+                  self.tempFilePaths.push(tempImg);
+                  if(self.tempFilePaths.length>=6){
+                    self.tempFileLen=false;
+                  }
+                  self.$apply();
+                })
+              }
+            });
+          },
+          namePush(){
+            this.publisher=false;
+            this.isRealName=1;
+          },
+          anonyPush(){
+            this.publisher=true;
+            this.isRealName=0;
+          },
+          input(e){
+            this.inputValue=e.detail.value;
+          },
+          textarea(e){
+            this.textValue=e.detail.value;
+          },
+          send(){
+            api.addSubject({
+              token:this.token,
+              parkId:this.parkId,
+              type:this.type,
+              title:this.inputValue,
+              content:this.textValue,
+              addInfo:{
+                isRealName:this.isRealName,
+                urlList:this.tempFilePaths,
+              }
+            }).then((res)=>{
+              api.getTopicInfo({
+                token:this.token,
+                parkId:this.parkId,
+              }).then((res)=>{
+                wx.showToast({
+                  title: '发布话题成功',
+                  icon: 'success',
+                  duration: 2000
+                });
+              });
+            });
+            wx.switchTab({
+              url: './index'
             })
           }
         };

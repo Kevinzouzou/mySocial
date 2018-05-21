@@ -61,6 +61,7 @@
   }
   .peoples navigator{display: inline-block;}
   .peoples .more{
+    padding:  ~"18rpx" 0;
     height:  ~"13rpx";
     border: 0;
     border-radius: 0;
@@ -85,6 +86,13 @@
     float: right;
     width: ~"40rpx";
     height: ~"40rpx";
+  }
+  .clubIntro .title .upImg{
+    transform:rotate(180deg);
+    -ms-transform:rotate(180deg); 	/* IE 9 */
+    -moz-transform:rotate(180deg); 	/* Firefox */
+    -webkit-transform:rotate(180deg); /* Safari 和 Chrome */
+    -o-transform:rotate(180deg); 	/* Opera */
   }
   .clubIntro .intros{
     font-size:~"28rpx";
@@ -153,6 +161,7 @@
     font-family: @family-light;
   }
   .activity image{
+    vertical-align: middle;
     width:  ~"200rpx";
     height: ~"200rpx";
   }
@@ -171,88 +180,61 @@
     padding: 0;
     font-family: @family-regular;
   }
+  .btnDis[disabled]{
+    background: #e3e3e3;
+  }
 </style>
 <template>
   <view class="banner">
-    <image class="banTop" src="/image/b1.jpg"></image>
-    <image class="banPosi" src="/image/31.png"></image>
+    <image class="banTop" src="{{circleList.addInfo.bannerUrl?circleList.addInfo.bannerUrl:'/image/b1.jpg'}}"></image>
+    <!--<image class="banPosi" src="{{circleList.thumbUrl}}"></image>-->
+    <image class="banPosi" src="{{circleList.addInfo.logoUrl?circleList.addInfo.logoUrl:'/image/31.png'}}"></image>
   </view>
   <view class="detailBody">
     <view class="title-row">
-      <text class="title">松湖智谷足球俱乐部</text>
-      <text class="nums">123人</text>
+      <text class="title">{{circleList.title}}</text>
+      <text class="nums">{{circleList.userList.length}}人</text>
     </view>
     <view class="peoples">
-      <image src="/image/41.png"></image>
-      <image src="/image/41.png"></image>
-      <image src="/image/41.png"></image>
-      <image src="/image/41.png"></image>
-      <image src="/image/41.png"></image>
-      <image src="/image/41.png"></image>
-      <image src="/image/41.png"></image>
-      <image src="/image/41.png"></image>
-      <image src="/image/41.png"></image>
-      <navigator url="./number">
-        <image class="more" src="/image/Group.png"></image>
-      </navigator>
+      <repeat for="{{circleList.userList9}}" item="childItem" key="key">
+        <image src="{{childItem.addInfo.userInfo.addInfo.url?childItem.addInfo.userInfo.addInfo.url:'/image/41.png'}}"></image>
+      </repeat>
+
+      <image class="more" src="/image/Group.png" @tap="membersInfo"></image>
     </view>
     <view class="intro">
-      简介：<text>松湖智谷足球俱乐部是由松湖智谷园区足球爱好者自行发起成立，欢迎园区志同道合者加入。</text>
+      简介：<text>{{circleList.content}}</text>
     </view>
-    <view class="clubIntro">
+    <view wx:if="{{circleList.addInfo.content}}" class="clubIntro">
       <view class="title">
         <text>俱乐部文字说明</text>
-        <image src="/image/icon_down.png"></image>
+        <image class="{{showIntro?'upImg':''}}" src="/image/icon_down.png" @tap="showClubDetail"></image>
       </view>
-      <view class="intros">
-        说到微信小程序，对他最贴切的定义莫过于微信之父张小龙对他下的定义，“小程序是一种不需要下载安装即可使用的应用，它实现了应用“触手可及”的梦想，用户扫一扫或者搜一下即可打开应用。也体现了“用完即走”的理念，用户不用关心是否安装太多应用的问题。应用将无处不在，随时可用，但又无需安装卸载。对于开发者而言，小程序开发门槛相对较低，难度不及APP，能够满足简单的基础应用，适合生活服务类线下商铺以及非刚需低频应用的转换。小程序能够实现消息通知、线下扫码、公众号关联等七大功能。其中，通过公众号关联，用户可以实现公众号与小程序之间相互跳转。”
-      </view>
+      <view wx:if="{{showIntro}}" class="intros">{{circleList.addInfo.content}}</view>
     </view>
   </view>
   <view class="activityTitles">
     <text class="title">活动列表</text>
-    <text class="num">（5）</text>
+    <text class="num">（{{activityList.length}}）</text>
   </view>
   <view class="othersActivity">
-    <view class="activityList">
-      <navigator url="./activity">
-        <view class="activity">
-          <view class="acIntro">
-            <text class="title">4月26日，踢足球，东莞体育馆体育馆</text>
-            <text class="reason">为迎接5.1假日，增加园区人员互动，运营团队特组织此次活动</text>
-            <text class="address">东莞市南城街道体育路3号</text>
-          </view>
-          <image src="/image/pic_activity.png"></image>
+    <view class="activityList" wx:for="{{activityList}}" item="item" wx:key="key">
+      <view class="activity" @tap="activityDetails({{index}})">
+        <view class="acIntro">
+          <text class="title">{{item.title}}</text>
+          <text class="reason">{{item.content}}</text>
+          <!--<text class="address">东莞市南城街道体育路3号</text>-->
         </view>
-      </navigator>
-
-      <navigator url="./activity">
-        <view class="activity">
-          <view class="acIntro">
-            <text class="title">4月26日，踢足球，东莞体育馆...</text>
-            <text class="reason">为迎接5.1假日，增加园区人员互动，运营团队特组织此次活动</text>
-            <text class="address">东莞市南城街道体育路3号</text>
-          </view>
-          <image src="/image/pic_activity.png"></image>
-        </view>
-      </navigator>
-      <navigator url="./activity">
-        <view class="activity">
-          <view class="acIntro">
-            <text class="title">4月26日，踢足球，东莞体育馆...</text>
-            <text class="reason">为迎接5.1假日，增加园区人员互动，运营团队特组织此次活动</text>
-            <text class="address">东莞市南城街道体育路3号</text>
-          </view>
-          <image src="/image/pic_activity.png"></image>
-        </view>
-      </navigator>
+        <image src="{{item.thumbUrl}}"></image>
+      </view>
     </view>
   </view>
-  <button class="addIn">我要加入</button>
+  <button class="addIn {{circleList.addInCircle?'btnDis':''}}" disabled="{{circleList.addInCircle}}" @tap="joinClub">{{circleList.addInCircle?'已加入':'我要加入'}}</button>
 </template>
 
 <script>
   import wepy from "wepy";
+  import api from "./api/homeApi";
 
   export default class Index extends wepy.page {
     config = {
@@ -262,18 +244,82 @@
     };
     components = {};
 
-    data = {};
+    data = {
+      token:wx.getStorageSync('token'),
+      parkId:wx.getStorageSync('parkId'),
+      userId:wx.getStorageSync('userId'),
+      circleId:'',
+      circleList:[],       //圈子详情
+      activityList:[],     //活动列表
+      showIntro:true,      //俱乐部文字说明
+      addCir:'',
+    };
 
     computed = {};
 
-    methods = {};
+    methods = {
+      membersInfo(){
+        this.$navigate('./number',{title: this.circleList.id});
+      },
+      activityDetails(index){
+        this.$navigate('./activity',{circleId:this.circleList.id, activityId:this.activityList[index].id});
+      },
+      showClubDetail(){
+        this.showIntro=!this.showIntro;
+      },
+      joinClub(){
+        let self=this;
+        api.addCircleUser({
+          token:this.token,
+          parkId:this.parkId,
+          circleId:this.circleList.id
+        }).then((res)=>{
+          self.circleList.addInCircle=true;
+          self.getCircle();
+          self.$apply();
+          wx.showToast({
+            title: '加入成功',
+            icon: 'success',
+            duration: 2000
+          });
+        })
+      }
+    };
 
     events = {};
 
+    getCircle(){
+      let self = this;
+      api.getCircleInfo({
+        token: self.token,
+        parkId: self.parkId,
+        id: self.circleId,
+      }).then((res) => {
+        self.circleList = res[0];
+        self.circleList.userList9 = self.circleList.userList.slice(0, 9);
+        if(self.circleList.userId===self.userId){
+          self.circleList.addInCircle=true;
+        }else{
+          self.circleList.addInCircle = false;
+        }
 
-    onLoad() {
-
+        api.getActivityInfo({
+          token: self.token,
+          parkId: self.parkId,
+          circleId: self.circleList.id,
+        }).then((res) => {
+          self.activityList = res;
+          self.$apply();
+        });
+        self.$apply();
+      });
+    };
+    onShow(){
+      this.getCircle();
+    };
+    onLoad(res) {
+      this.circleId = res.title;
+      this.getCircle();
     }
-
   }
 </script>

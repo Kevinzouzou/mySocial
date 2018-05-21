@@ -15,7 +15,9 @@
   export default class extends wepy.app {
     config = {
       pages: [
+        'pages/tabBar/social/mySocial',  //我的社交
         'pages/tabBar/social/index',  //社交 主页
+
         'pages/tabBar/index', //首页
         'pages/tabBar/service', //服务
         'pages/tabBar/social/circle', //社交 圈子详情
@@ -23,8 +25,7 @@
         'pages/tabBar/social/number',  //社交 圈子成员
         'pages/tabBar/social/topic',  //社交 话题详情
         'pages/tabBar/social/releaseTopic',  //社交 发布话题
-        'pages/tabBar/social/square',  //社交 广场详情
-        'pages/tabBar/social/inform'   //社交 广场举报
+        'pages/tabBar/social/inform'   //社交 广场举报,
       ],
       subPackages: [
         {
@@ -59,7 +60,7 @@
             'selectedIconPath': 'asserts/images/home_sel.png'
           },
           {
-            pagePath: 'pages/tabBar/social/index',
+            pagePath: 'pages/tabBar/social/mySocial',
             text: '社交',
             iconPath: 'asserts/images/ser.png',
             selectedIconPath: 'asserts/images/ser_sel.png'
@@ -86,7 +87,9 @@
     }
 
     onLaunch() {
-      wx.setStorageSync('parkId','8969878f1f1149e6a7afae38636c0abc');
+      wx.setStorageSync('parkId','969878f1f1149e6a7afae38636c0abc');
+      wx.setStorageSync('userId','5D2E3A9FB0FF49649540CD086E55DC02');
+      wx.setStorageSync('token','NUQyRTNBOUZCMEZGNDk2NDk1NDBDRDA4NkU1NURDMDI=');
     }
 
     getUserInfo(cb) {

@@ -148,17 +148,10 @@
 <template>
   <view class="activity">
     <view class="acIntro">
-      <view class="title">4月29号，东莞体育馆足球场，对战天安酷派园区的战队，加油兄弟们</view>
-      <image src="/image/pic_activity.png"></image>
-      <view class="introDe">
-        2018年俄罗斯世界杯（英语：2018 FIFA World Cup，俄语：Чемпиона́т ми́ра
-        по футбо́лу 2018）是第21届世界杯足球赛。比赛将于2018年6月14日至7月15日在
-        俄罗斯境内11座城市中的12座球场内举行。这是世界杯首次在俄罗斯境内举行，也是世界杯
-        首次在东欧国家举行，同时是继2006年德国世界杯后世界杯再一次在欧洲举行。俄罗斯世界
-        杯共有32支球队参加比赛；除去东道主俄罗斯自动获得参赛资格以外，其他31支球队将通过
-        参加预选赛获得参赛资格。世界杯期间，将在俄罗斯境内举行64场比赛角逐出冠军。2014年
-        7月13日俄罗斯总统普京和巴西总统迪尔玛·罗塞夫交接世界杯主办权。
-      </view>
+      <view class="title">{{activityList.title}}</view>
+      <image src="{{activityList.thumbUrl?activityList.thumbUrl:'/image/b1.jpg'}}"></image>
+      <!--<image src="{{activityList.thumbUrl}}"></image>-->
+      <view class="introDe">{{activityList.content}}</view>
     </view>
     <view class="activityInfo">
       <text class="title">活动信息</text>
@@ -187,66 +180,24 @@
     <view class="mems">
       <view class="topTitle">
         <text class="title">已参加</text>
-        <text class="num">（5）</text>
+        <text class="num">（{{activityList.userList.length}}）</text>
       </view>
       <view class="members">
-        <view class="mem">
-          <image src="/image/41.png"></image>
-          <text>LILY</text>
-        </view>
-        <view class="mem">
-          <image src="/image/41.png"></image>
-          <text>Bella</text>
-        </view>
-        <view class="mem">
-          <image src="/image/41.png"></image>
-          <text>娃哈哈营养液</text>
-        </view>
-        <view class="mem">
-          <image src="/image/41.png"></image>
-          <text>LILY</text>
-        </view>
-        <view class="mem">
-          <image src="/image/41.png"></image>
-          <text>Bella</text>
-        </view>
-        <view class="mem">
-          <image src="/image/41.png"></image>
-          <text>娃哈哈营养液</text>
-        </view>
-        <view class="mem">
-          <image src="/image/41.png"></image>
-          <text>LILY</text>
-        </view>
-        <view class="mem">
-          <image src="/image/41.png"></image>
-          <text>Bella</text>
-        </view>
-        <view class="mem">
-          <image src="/image/41.png"></image>
-          <text>娃哈哈营养液</text>
-        </view>
-        <view class="mem">
-          <image src="/image/41.png"></image>
-          <text>LILY</text>
-        </view>
-        <view class="mem">
-          <image src="/image/41.png"></image>
-          <text>Bella</text>
-        </view>
-        <view class="mem">
-          <image src="/image/41.png"></image>
-          <text>娃哈哈营养液</text>
+        <view class="mem" wx:for="{{activityList.userList}}" item="item" wx:key="key">
+          <image src="{{item.addInfo.userInfo.addInfo.url?item.addInfo.userInfo.addInfo.url:'/image/41.png'}}"></image>
+          <!--<image src="{{item.addInfo.userInfo.addInfo.url}}"></image>-->
+          <text>{{item.addInfo.userInfo.addInfo.nickName}}</text>
         </view>
       </view>
     </view>
-    <button class="addIn">参加活动</button>
+    <button class="addIn" disabled="{{addInActivity}}" @tap="joinActive">{{addInActivity?'已参加':'参加活动'}}</button>
   </view>
 
 </template>
 
 <script>
   import wepy from 'wepy';
+  import api from "./api/homeApi";
 
   export default class Index extends wepy.page {
     config = {
@@ -256,17 +207,63 @@
     };
     components = {};
 
-    data = {};
+    data = {
+      token:wx.getStorageSync('token'),
+      parkId:wx.getStorageSync('parkId'),
+      userId:wx.getStorageSync('userId'),
+      activityList:[],
+      activityId:'',
+      circleId:'',
+      addInActivity:false,
+    };
 
     computed = {};
 
-    methods = {};
+    methods = {
+      joinActive(){
+        let self=this;
+        api.addActivityUser({
+          token:this.token,
+          parkId:this.parkId,
+          activityId:this.activityList.id
+        }).then((res)=>{
+          self.addInActivity=true;
+          self.getAcInfo();
+          self.$apply();
+          wx.showToast({
+            title: '参加活动成功',
+            icon: 'success',
+            duration: 2000
+          });
+        })
+      }
+    };
 
     events = {};
 
-
-    onLoad() {
-
+    getAcInfo(){
+      let self=this;
+      api.getActivityInfo({
+        token: self.token,
+        parkId: self.parkId,
+        circleId: self.circleId,
+        activityId:self.activityId,
+      }).then((res) => {
+        self.activityList = res[0];
+        self.activityList.userList.forEach((item)=>{
+          if(item.userId===self.userId){
+            self.addInActivity=true;
+          }else{
+            self.addInActivity=false;
+          }
+        });
+        self.$apply();
+      });
+    };
+    onLoad(res) {
+      this.circleId=res.circleId;
+      this.activityId=res.activityId;
+      this.getAcInfo();
     }
 
   }

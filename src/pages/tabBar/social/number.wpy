@@ -85,82 +85,28 @@
 </style>
 <template>
   <view class="banner">
-    <image class="banTop" src="/image/b1.jpg"></image>
-    <image class="banPosi" src="/image/31.png"></image>
+    <image class="banTop" src="{{circleList.addInfo.bannerUrl?circleList.addInfo.bannerUrl:'/image/b1.jpg'}}"></image>
+    <!--<image class="banPosi" src="{{circleList.thumbUrl}}"></image>-->
+    <image class="banPosi" src="{{circleList.addInfo.logoUrl?circleList.addInfo.logoUrl:'/image/31.png'}}"></image>
   </view>
   <view class="detailBody">
     <view class="title-row">
-      <text class="title">松湖智谷足球俱乐部成员</text>
-      <text class="nums">15人</text>
+      <text class="title">{{circleList.title}}成员</text>
+      <text class="nums">{{circleList.userList.length}}人</text>
     </view>
     <view class="members">
-      <view class="mem">
-        <image src="/image/41.png"></image>
-        <text>LILY</text>
-      </view>
-      <view class="mem">
-        <image src="/image/41.png"></image>
-        <text>Bella</text>
-      </view>
-      <view class="mem">
-        <image src="/image/41.png"></image>
-        <text>娃哈哈营养液</text>
-      </view>
-      <view class="mem">
-        <image src="/image/41.png"></image>
-        <text>LILY</text>
-      </view>
-      <view class="mem">
-        <image src="/image/41.png"></image>
-        <text>Bella</text>
-      </view>
-      <view class="mem">
-        <image src="/image/41.png"></image>
-        <text>娃哈哈营养液</text>
-      </view>
-      <view class="mem">
-        <image src="/image/41.png"></image>
-        <text>LILY</text>
-      </view>
-      <view class="mem">
-        <image src="/image/41.png"></image>
-        <text>Bella</text>
-      </view>
-      <view class="mem">
-        <image src="/image/41.png"></image>
-        <text>娃哈哈营养液</text>
-      </view>
-      <view class="mem">
-        <image src="/image/41.png"></image>
-        <text>LILY</text>
-      </view>
-      <view class="mem">
-        <image src="/image/41.png"></image>
-        <text>Bella</text>
-      </view>
-      <view class="mem">
-        <image src="/image/41.png"></image>
-        <text>娃哈哈营养液</text>
-      </view>
-      <view class="mem">
-        <image src="/image/41.png"></image>
-        <text>LILY</text>
-      </view>
-      <view class="mem">
-        <image src="/image/41.png"></image>
-        <text>Bella</text>
-      </view>
-      <view class="mem">
-        <image src="/image/41.png"></image>
-        <text>娃哈哈营养液</text>
+      <view class="mem" wx:for="{{circleList.userList}}" item="item" wx:key="key">
+        <image src="{{item.addInfo.userInfo.addInfo.url?item.addInfo.userInfo.addInfo.url:'/image/41.png'}}"></image>
+        <text>{{item.addInfo.userInfo.addInfo.nickName}}</text>
       </view>
     </view>
   </view>
-  <button class="addIn">我要加入</button>
+  <button class="addIn" disabled="{{addInCircle}}" @tap="joinClub">{{addInCircle?'已加入':'我要加入'}}</button>
 </template>
 
 <script>
   import wepy from 'wepy';
+  import api from "./api/homeApi";
 
   export default class Index extends wepy.page {
     config = {
@@ -170,17 +116,60 @@
     };
     components = {};
 
-    data = {};
+    data = {
+      token:wx.getStorageSync('token'),
+      parkId:wx.getStorageSync('parkId'),
+      circleList:[],
+      circleId:'',
+      addInCircle:false,
+      userId:wx.getStorageSync('userId'),
+    };
 
     computed = {};
 
-    methods = {};
+    methods = {
+      joinClub(){
+        let self=this;
+        api.addCircleUser({
+          token:this.token,
+          parkId:this.parkId,
+          circleId:this.circleList.id
+        }).then((res)=>{
+          self.addInCircle=true;
+          self.getMemNums();
+          self.$apply();
+          wx.showToast({
+            title: '加入成功',
+            icon: 'success',
+            duration: 2000
+          });
+        })
+      }
+    };
 
     events = {};
 
-
-    onLoad() {
-
+    getMemNums(){
+      let self=this;
+      api.getCircleInfo({
+        token: self.token,
+        parkId: self.parkId,
+        id: self.circleId,
+      }).then((res) => {
+        self.circleList = res[0];
+        self.circleList.userList.forEach((item) => {
+          if (item.userId === self.userId) {
+            self.addInCircle = true;
+          } else {
+            self.addInCircle = false;
+          }
+        });
+        self.$apply();
+      });
+    };
+    onLoad(res) {
+      this.circleId=res.title;
+      this.getMemNums();
     }
 
   }

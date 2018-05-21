@@ -1,3 +1,4 @@
+import util from './util.js'
 class Swallow {
   constructor(config) {
     this.config = config;
@@ -5,11 +6,14 @@ class Swallow {
 
 
   //普通请求公共方法
-  baseHttp(url, params, options) {
-    options.url = this.config.baseUrl + url;
-    options.data = params;
-    options.config = this.config;
-    return this._wxHttp(options)
+  baseHttp(url, params, options,method) {
+    let defaultRequest =this.config.getRequest();
+    let request = util.copyObject(defaultRequest,options) ;
+    request.url = this.config.baseUrl + url;
+    request.data = params;
+    request.method = method;
+    request.config = this.config;
+    return this._wxHttp(request)
   }
 
   /**
@@ -59,6 +63,8 @@ class Swallow {
       const uploadTask = wx.uploadFile(params);
     });
   }
+
+
 
 }
 

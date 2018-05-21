@@ -74,31 +74,32 @@
       <text class="reason">请选择举报原因</text>
       <view>
         <text>广告</text>
-        <image src="/image/icon_sel.png"></image>
+        <image src="{{isAd?'/image/icon_sel.png':'/image/icon_unsel.png'}}" @tap="reportAd"></image>
       </view>
       <view>
         <text>色情</text>
-        <image src="/image/icon_unsel.png"></image>
+        <image src="{{isPor?'/image/icon_sel.png':'/image/icon_unsel.png'}}" @tap="reportPor"></image>
       </view>
       <view>
         <text>违法/政治敏感</text>
-        <image src="/image/icon_unsel.png"></image>
+        <image src="{{isPoli?'/image/icon_sel.png':'/image/icon_unsel.png'}}" @tap="reportPoli"></image>
       </view>
       <view>
         <text>其他</text>
-        <image src="/image/icon_unsel.png"></image>
+        <image src="{{isOther?'/image/icon_sel.png':'/image/icon_unsel.png'}}" @tap="reportOther"></image>
       </view>
     </view>
     <view class="selDone">
       <text class="reason selWrite">请补充说明（选填）</text>
-      <textarea class="textarea" placeholder-class="textarea" placeholder="请输入文字"></textarea>
+      <textarea class="textarea" placeholder-class="textarea" placeholder="请输入文字" @input="input"></textarea>
     </view>
-    <button class="submit">提交</button>
+    <button class="submit" @tap="submit">提交</button>
   </view>
 </template>
 
 <script>
   import wepy from 'wepy';
+  import api from "./api/homeApi";
 
   export default class Index extends wepy.page {
     config = {
@@ -108,17 +109,78 @@
     };
     components = {};
 
-    data = {};
+    data = {
+      token:wx.getStorageSync('token'),
+      parkId:wx.getStorageSync('parkId'),
+      targetId:'',
+      types:[],
+      isAd:false,         //广告
+      isPor:false,        //色情
+      isPoli:false,       //违法/政治敏感
+      isOther:false,      //其他
+      textValue:'',
+      isRealName:0,
+    };
 
     computed = {};
 
-    methods = {};
+    methods = {
+      reportAd(){
+        this.isAd=!this.isAd;
+        if(this.isAd){
+          this.types.push('广告');
+        }else{
+          this.types.splice(this.types.indexOf('广告'),1);
+        }
+      },
+      reportPor(){
+        this.isPor=!this.isPor;
+        if(this.isPor){
+          this.types.push('色情');
+        }else{
+          this.types.splice(this.types.indexOf('色情'),1);
+        }
+      },
+      reportPoli(){
+        this.isPoli=!this.isPoli;
+        if(this.isPoli){
+          this.types.push('违法/政治敏感');
+        }else{
+          this.types.splice(this.types.indexOf('违法/政治敏感'),1);
+        }
+      },
+      reportOther(){
+        this.isOther=!this.isOther;
+        if(this.isOther){
+          this.types.push('其他');
+        }else{
+          this.types.splice(this.types.indexOf('其他'),1);
+        }
+      },
+      input(e){
+        this.textValue=e.detail.value;
+      },
+      submit(){
+        api.addTipOff({
+          token:this.token,
+          parkId:this.parkId,
+          targetId:this.targetId,
+          tipOffType:this.types.join(","),
+          tipOffCause:this.textValue,
+          addInfo:{
+            isRealName:this.isRealName,
+          }
+        }).then((res)=>{
+          console.log(res)
+        })
+      }
+    };
 
     events = {};
 
 
-    onLoad() {
-
+    onLoad(res) {
+      this.targetId=res.title;
     }
 
   }

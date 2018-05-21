@@ -114,6 +114,7 @@
     color: #333;
     font-family: @family-light;
   }
+  .allComments .box-title{border-bottom: 0;}
   .oneCom .box-title{
     border-bottom: 0;
   }
@@ -193,6 +194,7 @@
     text-align: center;
     border-bottom:  ~"1rpx" solid #e7e7e7;
   }
+  .moreDo .red{color:#F86934;}
   .moreDo text:first-child,.moreDo text:last-child{
     border-top:  ~"1rpx" solid #e7e7e7;
   }
@@ -205,29 +207,26 @@
   .myReply{
     position:fixed;
     bottom:0;
+    width: 100%;
+    text-align: center;
     background:#fff;
-    padding: ~"19rpx" ~"20rpx";
+    padding: ~"19rpx" ~"40rpx";
     border-top: ~"1rpx" solid #dcdcdc;
     height: ~"98rpx";
     box-sizing: border-box;
   }
-  .myReply image{
-    width: ~"52rpx";
-    height: ~"52rpx";
-    border-radius: 50%;
-    margin: ~"4rpx" ~"23rpx" ~"4rpx" 0;
-    vertical-align: middle
-  }
   .myReply input{
     display: inline-block;
     vertical-align: middle;
-    width: ~"517rpx";
+    width: ~"530rpx";
     border: ~"1rpx" solid #e7e7e7;
     background: #f2f2f2;
     height: ~"60rpx";
     line-height: ~"60rpx";
     box-sizing: border-box;
     padding:0 ~"20rpx";
+    margin-right:  ~"30rpx";
+    text-align: left;
     font-size:  ~"30rpx";
     border-radius:  ~"4rpx";
     font-family: @family-light;
@@ -235,7 +234,6 @@
   .myReply button{
     display:inline-block;
     vertical-align: middle;
-    float: right;
     color:#fff;
     background:#c1a17b;
     height:~"60rpx";
@@ -278,23 +276,23 @@
 </style>
 <template>
   <view class="topicDetails">
-    <block wx:for="{{topicList}}" wx:key="key" item="item">
+    <block>
       <view class="box-title">
-        <image src="{{item.addInfo.userList.userUrl}}"></image>
+        <image src="{{topicList.addInfo.isRealName?topicList.addInfo.publisher.addInfo.url:'/image/41.png'}}"></image>
         <view class="netName">
-          <text>{{item.addInfo.userList.userNick}}</text>
-          <text class="upTime">{{item.updateTime}}</text>
+          <text>{{topicList.addInfo.publisher.addInfo.nickName}}</text>
+          <text class="upTime">{{topicList.updateTime}}</text>
         </view>
       </view>
       <view class="topic-box">
         <view class="box-contain">
-          <text class="title">{{item.title}}</text>
-          <view class="detail">{{item.content}}</view>
-          <view wx:if="{{item.addInfo.urlList.length===1}}" class="one">
-            <image src="{{item.addInfo.urlList[0]}}"></image>
+          <text class="title">{{topicList.title}}</text>
+          <view class="detail">{{topicList.content}}</view>
+          <view wx:if="{{topicList.addInfo.urlList.length===1}}" class="one">
+            <image src="{{topicList.addInfo.urlList[0]}}"></image>
           </view>
           <view wx:else  class="morePic">
-            <repeat for="{{item.addInfo.urlList}}" item="childItem">
+            <repeat for="{{topicList.addInfo.urlList}}" item="childItem">
               <image src="{{childItem}}"></image>
             </repeat>
           </view>
@@ -317,18 +315,19 @@
       </view>
     </block>
 
+
     <view class="alls">
       <text class="title">全部评论</text>
-      <text class="num">（{{commentsAllList.length}}）</text>
+      <text class="num">（{{topicList.subjectCommentList.length}}）</text>
     </view>
     <view class="allComments">
-      <block wx:for="{{commentsAllList}}" wx:key="key" item="item">
+      <block wx:for="{{topicList.subjectCommentList}}" wx:key="key" item="item">
         <view class="oneCom">
           <view class="box-title">
-            <image src="{{item.addInfo.userList.userUrl}}"></image>
+            <image src="{{item.addInfo.userInfo.addInfo.url}}"></image>
             <view class="netName">
-              <text>{{item.addInfo.userList.userNick}}</text>
-              <text class="upTime">{{item.updateTime}}</text>
+              <text>{{item.addInfo.userInfo.addInfo.nickName}}</text>
+              <text class="upTime">{{item.createTime}}</text>
             </view>
             <view class="tipsRight">
               <view class="toReply active">
@@ -337,17 +336,17 @@
               </view>
               <view class="praise active">
                 <image src="{{item.comPraise?'/image/icon_pl_praise_sel.png':'/image/icon_pl_praise.png'}}" @tap="givePraiseThis({{index}})"></image>
-                <text @tap="givePraiseThis({{index}})">{{item.addInfo.praiseNums}}</text>
+                <text @tap="givePraiseThis({{index}})">赞</text>
               </view>
             </view>
           </view>
           <view class="theCom">
-            {{item.content}}
-            <block wx:if="{{item.commentReply}}">
-              <view class="replys">
+            {{item.comment}}
+            <block>
+              <view wx:if="{{item.commentReply.length>0}}" class="replys">
                 <repeat for="{{item.commentReply}}" item="childItem">
                   <view @tap="replySomebody({{index}})">
-                    <text class="theBody">@{{childItem.user}} </text>
+                    <text class="theBody">{{childItem.addInfo.isRealName===1?childItem.addInfo.userInfo.addInfo.nickName:"匿名"}} </text>
                     <text class="reply">{{childItem.reply}}</text>
                   </view>
                 </repeat>
@@ -357,148 +356,28 @@
           </view>
         </view>
       </block>
-
-      <!--<view class="oneCom">-->
-        <!--<view class="box-title">-->
-          <!--<image src="/image/41.png"></image>-->
-          <!--<view class="netName">-->
-            <!--<text>风一样的女子</text>-->
-            <!--<text class="upTime">30分钟前</text>-->
-          <!--</view>-->
-          <!--<view class="tipsRight">-->
-            <!--<view class="toReply">-->
-              <!--<image src="/image/icon_pl.png" @tap="reply"></image>-->
-              <!--<text @tap="reply">回复</text>-->
-            <!--</view>-->
-            <!--<view class="praise">-->
-              <!--<image src="/image/icon_pl_praise.png" @tap="giveLike"></image>-->
-              <!--<text @tap="giveLike">135</text>-->
-            <!--</view>-->
-          <!--</view>-->
-        <!--</view>-->
-        <!--<view class="theCom">-->
-          <!--如在下边这个例子中，点击 inner view 会先后调用handleTap3和handleTap2(因为tap事件会冒泡到 middle view，而 middle view 阻止了 tap 事件冒泡，不再向父节点传递)-->
-        <!--</view>-->
-      <!--</view>-->
-      <!--<view class="oneCom">-->
-        <!--<view class="box-title">-->
-          <!--<image src="/image/41.png"></image>-->
-          <!--<view class="netName">-->
-            <!--<text>风一样的女子</text>-->
-            <!--<text class="upTime">30分钟前</text>-->
-          <!--</view>-->
-          <!--<view class="tipsRight">-->
-            <!--<view class="toReply">-->
-              <!--<image src="/image/icon_pl.png" @tap="reply"></image>-->
-              <!--<text @tap="reply">回复</text>-->
-            <!--</view>-->
-            <!--<view class="praise">-->
-              <!--<image src="/image/icon_pl_praise.png" @tap="giveLike"></image>-->
-              <!--<text @tap="giveLike">135</text>-->
-            <!--</view>-->
-          <!--</view>-->
-        <!--</view>-->
-        <!--<view class="theCom">-->
-          <!--回复 <text class="theBody">@我生命中的阳光</text> 不好意思哈...-->
-          <!--<view class="replys">-->
-            <!--<text class="theBody">@我生命中的阳光 </text>-->
-            <!--<text class="reply">有点讨厌这种提醒，本来根本不会注意</text>-->
-          <!--</view>-->
-        <!--</view>-->
-      <!--</view>-->
-      <!--<view class="oneCom">-->
-        <!--<view class="box-title">-->
-          <!--<image src="/image/41.png"></image>-->
-          <!--<view class="netName">-->
-            <!--<text>风一样的女子</text>-->
-            <!--<text class="upTime">30分钟前</text>-->
-          <!--</view>-->
-          <!--<view class="tipsRight">-->
-            <!--<view class="toReply active">-->
-              <!--<image src="/image/icon_pl.png" @tap="reply"></image>-->
-              <!--<text @tap="reply">回复</text>-->
-            <!--</view>-->
-            <!--<view class="praise active">-->
-              <!--<image src="/image/icon_pl_praise_sel.png" @tap="giveLike"></image>-->
-              <!--<text @tap="giveLike">135</text>-->
-            <!--</view>-->
-          <!--</view>-->
-        <!--</view>-->
-        <!--<view class="theCom">-->
-          <!--如在下边这个例子中，点击 inner view 会先后调用handleTap3和handleTap2(因为tap事件会冒泡到 middle view，而 middle view 阻止了 tap 事件冒泡，不再向父节点传递)-->
-        <!--</view>-->
-      <!--</view>-->
-      <!--<view class="oneCom">-->
-        <!--<view class="box-title">-->
-          <!--<image src="/image/41.png"></image>-->
-          <!--<view class="netName">-->
-            <!--<text>风一样的女子</text>-->
-            <!--<text class="upTime">30分钟前</text>-->
-          <!--</view>-->
-          <!--<view class="tipsRight">-->
-            <!--<view class="toReply active">-->
-              <!--<image src="/image/icon_pl.png" @tap="reply"></image>-->
-              <!--<text @tap="reply">回复</text>-->
-            <!--</view>-->
-            <!--<view class="praise active">-->
-              <!--<image src="/image/icon_pl_praise_sel.png" @tap="giveLike"></image>-->
-              <!--<text @tap="giveLike">135</text>-->
-            <!--</view>-->
-          <!--</view>-->
-        <!--</view>-->
-        <!--<view class="theCom">-->
-          <!--如在下边这个例子中，点击 innerView 会先后调用handleTap3和handleTap2(因为tap事件会冒泡到 middle view，而 middle view 阻止了 tap 事件冒泡，不再向父节点传递)-->
-        <!--</view>-->
-      <!--</view>-->
-      <!--<view class="oneCom">-->
-        <!--<view class="box-title">-->
-          <!--<image src="/image/41.png"></image>-->
-          <!--<view class="netName">-->
-            <!--<text>风一样的女子</text>-->
-            <!--<text class="upTime">30分钟前</text>-->
-          <!--</view>-->
-          <!--<view class="tipsRight">-->
-            <!--<view class="toReply active">-->
-              <!--<image src="/image/icon_pl.png" @tap="reply"></image>-->
-              <!--<text @tap="reply">回复</text>-->
-            <!--</view>-->
-            <!--<view class="praise active">-->
-              <!--<image src="/image/icon_pl_praise_sel.png" @tap="giveLike"></image>-->
-              <!--<text @tap="giveLike">135</text>-->
-            <!--</view>-->
-          <!--</view>-->
-        <!--</view>-->
-        <!--<view class="theCom">-->
-          <!--回复 <text class="theBody">@我生命中的阳光</text> 不好意思哈...-->
-          <!--<view class="replys">-->
-            <!--<text class="theBody">@我生命中的阳光 </text>-->
-            <!--<text class="reply">有点讨厌这种提醒，本来根本不会注意</text>-->
-          <!--</view>-->
-        <!--</view>-->
-      <!--</view>-->
     </view>
     <view wx:if="{{moreAction}}" class="moreDo">
-      <navigator url="./inform">
-        <text class="report">举报</text>
-      </navigator>
-      <text class="collect">收藏</text>
+      <!--<navigator url="./inform">-->
+        <text class="report" @tap="cancelDo">举报</text>
+      <!--</navigator>-->
+      <text class="collect {{isFavo?'red':''}}" @tap="favorite">收藏</text>
       <text @tap="cancelDo" class="cancel">取消</text>
     </view>
     <!--回复-->
     <view wx:if="{{anonymous}}" class="quicCom">
       <view class="myReply">
-        <image src="/image/31.png"></image>
-        <input placeholder="点击输入..."></input>
-        <button @tap="pubCom" class="publish">发表</button>
+        <input placeholder="点击输入..." @input="bindInput"></input>
+        <button @tap="pubComment({{isTopicComment}})" class="publish">发表</button>
       </view>
-      <view wx:if="{{anony}}" class="anony">
+      <view class="anony">
         <view>
           <image src="/image/41.png"></image>
           <text>张三丰</text>
-          <image @tap="comPush" src="{{publisher?'/image/icon_unsel.png':'/image/icon_sel.png'}}"></image>
+          <image @tap="namePush" src="{{publisher?'/image/icon_unsel.png':'/image/icon_sel.png'}}"></image>
         </view>
         <view>
-          <image src="/image/41.png"></image>
+          <image src="/image/icon_group.png"></image>
           <text>匿名评论</text>
           <image @tap="comPush" src="{{publisher?'/image/icon_sel.png':'/image/icon_unsel.png'}}"></image>
         </view>
@@ -509,6 +388,8 @@
 
 <script>
   import wepy from "wepy";
+  import api from "./api/homeApi";
+  import util from "../../../utils/util";
 
   export default class Index extends wepy.page {
     config = {
@@ -519,89 +400,21 @@
     components = {};
 
     data = {
+      token:wx.getStorageSync('token'),   
+      parkId:wx.getStorageSync('parkId'),
       moreAction:false,
+      isRealName:1,       //默认实名
       praiseLove:false,    //点赞
-      // praiseNums:135,
       anonymous:false,       //回复
-      anony:false,           //选实名还是匿名
       publisher:false,       //回复人方式
       comPraise:false,       //评论点赞
-      comPraiseNums:100,
-      topicList:[
-        {
-          praiseLove:false,
-          anonymous:false,
-          // userUrl:"/image/41.png",
-          // userName:"风一样的女子",
-          updateTime:"30分钟前",
-          title:"[吐槽]小蓝单车的押金你们都退了吗。",
-          content:"小蓝单车押金申请退款都快一个月了，进度还是在审核，什么鬼？你们都退出来了吗？？？",
-          contUrl:"/image/b1.jpg",
-          addInfo:{
-            userList:{
-              userId:1,
-              userNick:"风一样的女子",
-              userUrl:"/image/41.png"
-            },
-            urlList:[
-              "/image/b1.jpg",
-              "/image/b1.jpg",
-              "/image/b1.jpg",
-              "/image/b1.jpg"
-            ],
-            praiseNums:100,
-            comNums:100
-          }
-        }
-      ],
-      commentsAllList:[
-        {
-          comPraise:false,
-          updateTime:"30分钟前",
-          content:"如在下边这个例子中，点击 inner view 会先后调用handleTap3和handleTap2(因为tap事件会冒泡到 middle view，而 middle view 阻止了 tap 事件冒泡，不再向父节点传递)",
-          addInfo:{
-            praiseNums:110,
-            userList:{
-              userId:1,
-              userNick:"风一样的女子",
-              userUrl:"/image/41.png"
-            }
-          }
-        },
-        {
-          comPraise:false,
-          commentReply:[
-            {user:"我生命中的阳光",reply:"有点讨厌这种提醒，本来根本不会注意"}
-          ],
-          updateTime:"50分钟前",
-          content:"如在下边这个例子中，点击 inner view 会先后调用handleTap3和handleTap2(因为tap事件会冒泡到 middle view，而 middle view 阻止了 tap 事件冒泡，不再向父节点传递)",
-          addInfo:{
-            praiseNums:10,
-            userList:{
-              userId:1,
-              userNick:"风一样",
-              userUrl:"/image/41.png"
-            }
-          }
-        },
-        {
-          comPraise:false,
-          commentReply:[
-            {user:"我生命中的阳光",reply:"有点讨厌这种提醒，本来根本不会注意"},
-            {user:"冬天里的一把火",reply:"有点讨厌，确实不喜欢"}
-          ],
-          updateTime:"60分钟前",
-          content:"如在下边这个例子中，点击 inner view 会先后调用handleTap3和handleTap2(因为tap事件会冒泡到 middle view，而 middle view 阻止了 tap 事件冒泡，不再向父节点传递)",
-          addInfo:{
-            praiseNums:100,
-            userList:{
-              userId:1,
-              userNick:"烈焰下的一片叶",
-              userUrl:"/image/41.png"
-            }
-          }
-        },
-      ]
+      inputValue:'',          //评论内容
+      isFavo:false,          //是否收藏
+      cancel:'',
+      isTopicComment:true,   //话题评论或评论回复
+      topicList:[],
+      replyList:[],            //回复过渡列表
+      comIndex:0,              //回复第几条评论
     };
 
     computed = {};
@@ -612,55 +425,151 @@
       },
       givePraise(){
         this.praiseLove=!this.praiseLove;
-        // if(this.praiseLove){
-        //   this.praiseNums++;
-        // }else{
-        //   this.praiseNums--;
-        // }
+        let self= this;
+        if(this.praiseLove){
+          api.praiseTopic({
+            token:this.token,
+            parkId:this.topicList.parkId,
+            subjectId:this.topicList.id,
+            type:"点赞"
+          }).then((res)=>{
+            self.cancel = res;
+          });
+          this.topicList.praiseNums++;
+        }else{
+          api.cancelPraiseTopic({id:self.cancel}).then((res)=>{
+          });
+          this.topicList.praiseNums--;
+        }
+        this.$apply();
       },
       givePraiseThis(index){
-        this.commentsAllList[index].comPraise=!this.commentsAllList[index].comPraise;
-        if(this.commentsAllList[index].comPraise){
-          this.commentsAllList[index].addInfo.praiseNums++;
+        this.topicList.subjectCommentList[index].comPraise=!this.topicList.subjectCommentList[index].comPraise;
+        let self= this;
+        if(this.topicList.subjectCommentList[index].comPraise){
+          api.praiseTopic({
+            token:this.token,
+            parkId:this.topicList.parkId,
+            subjectId:this.topicList.subjectCommentList[index].id,
+            type:"点赞"
+          }).then((res)=>{
+            self.cancel = res;
+          });
         }else{
-          this.commentsAllList[index].addInfo.praiseNums--;
+          api.cancelPraiseTopic({id:self.cancel}).then((res)=>{
+          });
         }
+        this.$apply();
       },
-      giveLike(){
-        this.comPraise=!this.comPraise;
-        if(this.comPraise){
-          this.comPraiseNums++;
+      favorite(){
+        this.isFavo=!this.isFavo;
+        this.moreAction=false;
+        let self= this;
+        if(this.isFavo){
+          api.praiseTopic({
+            token:this.token,
+            parkId:this.topicList.parkId,
+            subjectId:this.topicList.id,
+            type:"收藏"
+          }).then((res)=>{
+            self.cancel = res;
+          });
+          this.topicList.praiseNums++;
         }else{
-          this.comPraiseNums--;
+          api.cancelPraiseTopic({id:self.cancel}).then((res)=>{
+          });
+          this.topicList.praiseNums--;
         }
+        this.$apply();
       },
       reply(){
         this.anonymous=!this.anonymous;
+        this.isTopicComment=true;
       },
       replyThis(index){
         this.anonymous=!this.anonymous;
+        this.isTopicComment=false;
+        this.replyList=this.topicList.subjectCommentList[index];
+        this.comIndex=index;
       },
       replySomebody(index){
         this.anonymous=!this.anonymous;
       },
-      comPush(){
-        this.anony=false;
-
-        this.anonymous=false;
+      namePush(){
+        this.isRealName=1;
+        this.publisher=false;
       },
-      pubCom(){
-        this.anony=true;
+      comPush(){
+        this.isRealName=0;
+        this.publisher=true;
+      },
+      bindInput(e){
+        this.inputValue=e.detail.value;
+      },
+      pubComment(isTopicComment){
+        if(this.isTopicComment){
+          api.addSubComment({
+            token:this.token,
+            parkId:this.topicList.parkId,
+            subjectId:this.topicList.id,
+            comment:this.inputValue,
+            addInfo:{
+              isRealName:this.isRealName
+            }
+          }).then((res)=>{
+            api.getTopicInfo({
+              parkId: this.parkId,
+              subjectId:this.topicList.id,
+            }).then((res)=>{
+              this.topicList.subjectCommentList=res[0].subjectCommentList;
+              this.$apply();
+            });
+          });
+        }else{
+          api.addSubReply({
+            token:this.token,
+            parkId:this.topicList.parkId,
+            targetUserId:this.replyList.addInfo.userInfo.id,
+            commentId:this.replyList.id,
+            reply:this.inputValue,
+            addInfo:{
+              isRealName:this.isRealName
+            }
+          }).then((res)=>{
+            api.commentReplys({
+              token:this.token,
+              commnetId:this.replyList.id,
+            }).then((res)=>{
+              this.topicList.subjectCommentList[this.comIndex].commentReply=res;
+              this.$apply();
+            })
+          });
+
+        }
+        this.anonymous=false;
       },
       cancelDo(){
         this.moreAction=false;
+        this.$navigate('./inform',{title: this.topicList.id})
       }
     };
 
     events = {};
 
 
-    onLoad() {
-
+    onLoad(res) {
+      let self=this;
+      this.topicList=JSON.parse(res.title);
+      this.topicList.subjectCommentList.forEach((childitem)=>{
+        childitem.comPraise=false;
+        api.commentReplys({
+          token:this.token,
+          commnetId:childitem.id,
+        }).then((res)=>{
+          childitem.commentReply=res;
+          self.$apply();
+        })
+      });
     }
 
   }

@@ -25,7 +25,7 @@ let getObjProperty = function getObjProperty(obj) {
   }
   let arr=[];
   for (let key in obj) {
-    arr[0] =key
+    arr[0] =key;
     arr[1] = (null === obj[key]) ? "":obj[key]
   }
   if (typeof (arr[1]) !== 'string'){

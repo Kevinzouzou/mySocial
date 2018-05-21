@@ -28,12 +28,24 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": -1,
+			"current": 1,
 			"list": [
 				{
 					"id": -1,
 					"name": "activity",
 					"pathName": "pages/tabBar/social/activity",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "index",
+					"pathName": "pages/tabBar/social/index",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "mySocial",
+					"pathName": "pages/tabBar/social/mySocial",
 					"query": ""
 				}
 			]

@@ -6,6 +6,9 @@
   page{
     background: #fff;
   }
+  .contain{
+    border-top:  ~"20rpx" solid #ededed;
+  }
   .main,.title{
     font-size: ~"32rpx";
     font-family: @family-regular;
@@ -16,7 +19,6 @@
     display:flex;
     flex-direction:row;
     border-bottom: ~"1rpx" solid #E7E7E7;
-    /*margin-top:  ~"50rpx";*/
   }
   .nav text{
     display: inline-block;
@@ -331,6 +333,39 @@
     color: #222;
     line-height:  ~"28rpx";
   }
+  .myAllComments{
+    border-bottom: ~"20rpx" solid #ededed;
+  }
+  .myAllComments .oneCom{
+    border-bottom:  ~"20rpx" solid #ededed;
+  }
+  .myAllComments .theCom{
+    padding-left:~"40rpx";
+    padding-right:~"40rpx";
+    font-size:~"28rpx";
+    line-height:  ~"44rpx";
+    margin:0 0 ~"40rpx";
+    text-align: justify;
+    color: #333;
+    font-family: @family-light;
+  }
+  .theCom .theBody{
+    color: #c1a17b;
+    font-family: @family-regular;
+  }
+  .theCom .replys{
+    line-height:  ~"38rpx";
+    background:#f2f2f2;
+    padding:~"22rpx"  ~"30rpx" ~"28rpx";
+    margin-top:~"13rpx";
+    color:#999;
+  }
+  .theCom .replys view{margin-bottom: ~"15rpx";}
+  .alls{
+    height:  ~"108rpx";
+    padding:  ~"37rpx"  ~"40rpx";
+    border-bottom: ~"1rpx" solid #e7e7e7;
+  }
 </style>
 <template>
   <view class="main">
@@ -338,11 +373,12 @@
       <text class="{{selectTopic?'pushTopic':'hiddenTopic'}}">+</text>
     </navigator>
     <view class="nav so-top">
-      <view class="{{selectTopic?'yellow':'default'}}"  @tap="selectTopic"><text>话题</text></view>
-      <view class="{{selectCircle?'yellow':'default'}}" @tap="selectCircle"><text>圈子</text></view>
+      <view class="{{selectTopic?'yellow':'default'}}"  @tap="selectTopic"><text>我的话题</text></view>
+      <view class="{{selectMessage?'yellow':'default'}}"  @tap="message"><text>我的留言</text></view>
+      <view class="{{selectCircle?'yellow':'default'}}" @tap="selectCircle"><text>我的圈子</text></view>
     </view>
     <view class="contain">
-      <!-- 话题 -->
+      <!-- 我的话题 -->
       <view class="{{selectTopic?'show':'hidden'}}">
         <!-- 热点话题 -->
         <view class="top-title">
@@ -430,7 +466,39 @@
         </view>
       </view>
 
-      <!-- 圈子 -->
+      <!-- 我的留言 -->
+      <view class="{{selectMessage?'show':'hidden'}}">
+        <view class="myAllComments">
+          <block wx:for="{{myCommentList}}" wx:key="key" item="item">
+            <view class="oneCom">
+              <view class="box-title">
+                <image src="{{item.addInfo.userInfo.addInfo.url}}"></image>
+                <view class="netName">
+                  <text>{{item.addInfo.isRealName===1?item.addInfo.userInfo.addInfo.nickName:'匿名'}}</text>
+                  <text class="upTime">{{item.createTime}}</text>
+                </view>
+              </view>
+              <view class="theCom">
+                {{item.comment}}
+                <block>
+                  <view wx:if="{{item.commentReply.length>0}}" class="replys">
+                    <repeat for="{{item.commentReply}}" item="childItem">
+                      <view @tap="replySomebody({{index}})">
+                        <text class="theBody">{{childItem.addInfo.isRealName===1?childItem.addInfo.userInfo.addInfo.nickName:"匿名"}} </text>
+                        <text class="reply">{{childItem.reply}}</text>
+                      </view>
+                    </repeat>
+                  </view>
+                </block>
+
+              </view>
+            </view>
+          </block>
+        </view>
+
+      </view>
+
+      <!-- 我的圈子 -->
       <view class="{{selectCircle?'show':'hidden'}}">
         <block wx:for="{{circleList}}" item="item" wx:key="key">
           <!-- 俱乐部 -->
@@ -445,7 +513,7 @@
                   <text class="num">{{item.userList.length}}人</text>
                 </view>
               </view>
-              <button class="{{item.addInCircle?'addIn':''}}" disabled="{{item.addInCircle}}" @tap="join({{index}})">{{item.addInCircle?'已加入':'+ 加入'}}</button>
+              <!--<button class="{{item.addInCircle?'addIn':''}}" disabled="{{item.addInCircle}}" @tap="join({{index}})">{{item.addInCircle?'已加入':'+ 加入'}}</button>-->
             </view>
             <view class="intro" @tap="jumpCirInfo({{index}})">
               简介：<text>{{item.content}}</text>
@@ -473,8 +541,9 @@
     data = {
       token:wx.getStorageSync('token'),
       parkId:wx.getStorageSync('parkId'),
-      userId:wx.getStorageSync('userId'),
+      userId:'1231322',    //登录后我的ID
       selectTopic: true,     //话题
+      selectMessage: false,   //留言
       selectCircle: false,   //圈子
       anonymous:false,       //快速评论
       isRealName:1,       //默认实名
@@ -487,7 +556,9 @@
       allTopic:[],
       cancel:'',
       sendList:[],           //发表评论
-      circleList:[],         //圈子列表
+      circleList:[],         //我参与的圈子列表
+      allCircleList:[],      //所有圈子列表
+      myCommentList:[],      //我的留言
     };
 
     computed = {};
@@ -495,10 +566,17 @@
     methods = {
       selectTopic(){
         this.selectCircle = false;
+        this.selectMessage = false;
         this.selectTopic = true;
+      },
+      message(){
+        this.selectMessage = true;
+        this.selectTopic = false;
+        this.selectCircle = false;
       },
       selectCircle(){
         this.selectTopic = false;
+        this.selectMessage = false;
         this.selectCircle = true;
       },
       comments(){
@@ -581,7 +659,7 @@
         this.$navigate('./topic',{title: JSON.stringify(this.topicList[index])})
       },
       jumpCirInfo(index){
-        this.$navigate('./circle',{title: this.circleList[index].id})
+        this.$navigate('./circle',{title: JSON.stringify(this.circleList[index])})
       },
       join(index){
         let self=this;
@@ -606,6 +684,7 @@
       api.getTopicInfo({
         token:this.token,
         parkId: this.parkId,
+        userId:this.userId,
       }).then((res)=>{
         this.allTopic=res;
         this.allTopic.forEach((item)=>{
@@ -624,32 +703,40 @@
         this.$apply();
       })
     };
-    getCirInfo(){
+
+    onLoad(){
       let self=this;
+      wx.setStorageSync('token', this.token);
+      this.checkTopicInfo();
       api.getCircleInfo({
         token:this.token,
         parkId:this.parkId,
       }).then((res)=>{
-        self.circleList=res;
-        self.circleList.forEach((item)=>{
-          if(item.userId===self.userId){
-            item.addInCircle=true;
-          }else{
-            item.addInCircle=false;
+        self.allCircleList=res;
+        self.allCircleList.forEach((item)=>{
+          item.addInCircle  = false;
+          if(item.id===self.userId){
+            self.circleList.push(item);
           }
         });
         self.$apply();
       });
-    };
-    onShow(){
-      let self=this;
-     this.getCirInfo();
-     this.checkTopicInfo();
-    };
-    onLoad(){
-      let self=this;
-      this.checkTopicInfo();
-      this.getCirInfo();
+      api.getMyComments({
+        token:this.token
+      }).then((res)=>{
+        console.log(res)
+        self.myCommentList=res;
+        self.myCommentList.forEach((childitem)=>{
+          api.commentReplys({
+            token:this.token,
+            commnetId:childitem.id,
+          }).then((res)=>{
+            childitem.commentReply=res;
+            self.$apply();
+          })
+        });
+        self.$apply();
+      })
     }
 
   }
