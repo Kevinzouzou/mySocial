@@ -97,11 +97,33 @@
       if (this.globalData.userInfo) {
         return this.globalData.userInfo;
       }
-      wepy.getUserInfo({
-        success(res) {
-          console.log(res)
-          that.globalData.userInfo = res.userInfo;
-          cb && cb(res.userInfo);
+      wx.getUserInfo({
+        success: function (res) {
+          wx.setStorageSync('userInfo', res.userInfo);
+          wx.setStorageSync('userInfo.avatarUrl', res.userInfo.avatarUrl);
+          wx.setStorageSync('userInfo.nickName', res.userInfo.nickName);
+          _self.globalData.userInfo = res.userInfo;
+          console.log(res.userInfo);
+        },
+        fail: (req) => {
+          wx.showModal({
+            title: '您未授权登陆',
+            content: '请设置修改登陆，然后获取用户信息',
+            success: (res) => {
+              if (res.confirm) {
+                wx.openSetting({
+                  success: (res) => {
+                    res.authSetting = {
+                      "scope.userInfo": true,
+                    };
+                    // self.getUserData();
+                  }
+                })
+              } else if (res.cancel) {
+                console.log('用户点击取消')
+              }
+            }
+          })
         }
       });
     }

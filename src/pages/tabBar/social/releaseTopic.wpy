@@ -199,8 +199,8 @@
     </view>
     <view class="anonymous">
       <view>
-        <image src="/image/41.png"></image>
-        <text>张三丰</text>
+        <image src="{{userUrl}}"></image>
+        <text>{{realName}}</text>
         <image @tap="namePush" src="{{publisher?'/image/icon_unsel.png':'/image/icon_sel.png'}}"></image>
       </view>
       <view>
@@ -229,6 +229,8 @@
         data = {
           token:wx.getStorageSync('token'),
           parkId:wx.getStorageSync('parkId'),
+          userUrl:wx.getStorageSync('userInfo.avatarUrl'),
+          realName:wx.getStorageSync('userInfo.nickName'),
           isRealName:1,
           inputValue:'',            //标题
           textValue:'',             //内容
